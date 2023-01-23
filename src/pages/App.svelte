@@ -1,40 +1,17 @@
-<script lang="ts">
-    import { onMount } from "svelte";
-    import { TileManager } from "../components/TileManager";
+<script>
+    import router from "page";
 
-    const rows = 4;
+    import Home from "./Home.svelte";
+    import Game from "./Game.svelte";
 
-    let canvas: HTMLCanvasElement;
-    let tileManager: TileManager;
+    let page;
 
-    onMount(() => {
-        const context = canvas.getContext("2d");
-        tileManager = new TileManager(context);
-        tileManager.createMatrix(canvas.width, rows);
-        tileManager.startGame(rows);
-    });
+    router("/", () => (page = Home));
+    router("/blog", () => (page = Game));
+
+    router.start();
 </script>
 
 <main>
-    <canvas
-        bind:this={canvas}
-        on:mousedown={(...args) => tileManager.handleClick(...args)}
-        id="canvas"
-        width={640}
-        height={640}
-    />
+    <svelte:component this={page} />
 </main>
-
-<style>
-    main {
-        display: grid;
-        align-content: center;
-        background-color: blueviolet;
-    }
-
-    canvas {
-        width: 40rem;
-        height: 40rem;
-        background-color: brown;
-    }
-</style>
