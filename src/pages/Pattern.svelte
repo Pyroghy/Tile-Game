@@ -1,34 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { TileManager } from "../components/TileManager";
-
-    // import from some sort of config? or user choice?
-    const rows = 4;
+    import type { TileManager } from "../components/TileManager";
 
     let canvas: HTMLCanvasElement;
     let tileManager: TileManager;
 
-    onMount(() => {
-        const context = canvas.getContext("2d");
-        tileManager = new TileManager(context);
-        tileManager.createMatrix(canvas.width, rows);
-        tileManager.startGame(rows);
+    // const game = new Game({ context: context, gamemode: GameType.PATTERN });
 
-        let def_time = 1000; // 30 seconds - 30000
-        const timer = document.getElementById("time");
-
-        let inte = setInterval(() => {
-            if (def_time <= 0) {
-                clearInterval(inte);
-                tileManager.stopGame(canvas.width);
-            }
-
-            def_time -= 100;
-
-            timer.innerText = (def_time / 1000).toFixed(1).toString();
-
-        }, 100);
-    });
+    onMount(() => {});
 </script>
 
 <main>

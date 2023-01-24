@@ -49,6 +49,17 @@ export class TileManager {
         this.drawTileMatrix();
     }
 
+    public stopGame(width: number) {
+        const boxWidth = width * 0.8;
+        const boxHeight = width * 0.6;
+
+        let x = (width / 2) - (boxWidth / 2);
+        let y = (width / 2) - (boxHeight / 2);
+
+        this.context.fillStyle = "red"
+        this.context.fillRect(x, y, boxWidth, boxHeight);
+    }
+
     public drawTile(tile: Tile) {
         this.context.fillStyle = tile.color;
         this.context.fillRect(tile.x, tile.y, tile.width, tile.height);

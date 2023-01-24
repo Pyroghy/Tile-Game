@@ -1,12 +1,12 @@
-import { Tile } from "./Tile";
+import { Tile } from "../../components/Tile";
 
 export class TileMatrix {
-    public tileMatrix: Tile[];
+    public matrix: Tile[];
     public width: number;
     public rows: number;
 
     public constructor(width: number, rows: number) {
-        this.tileMatrix = [];
+        this.matrix = [];
         this.width = width;
         this.rows = rows;
 
@@ -16,7 +16,7 @@ export class TileMatrix {
             for (let j = 0; j < this.rows; j++) {
                 const x = this.getPadding(j);
                 const tile = new Tile({ x: x, y: y, width: this.tileSize, height: this.tileSize }); // do i even need a class for the Tile?
-                this.tileMatrix.push(tile);
+                this.matrix.push(tile);
             }
         }
     }
@@ -36,8 +36,25 @@ export class TileMatrix {
     private getPadding(index: number) {
         return (this.tileSize + this.gap) * index + this.gap + this.paddingAdjustment;
     }
+}
 
-    public toString() {
-        return this.tileMatrix;
+export function createTileMatrix(width: number, rows: number) {
+    const matrix: Tile[] = [];
+
+    const tileSize = Math.floor((width / rows) * 0.98);
+    const padding = Math.floor((width - tileSize * rows) / (rows + 1));
+    const paddingAdjustment = Math.abs((width - (tileSize * rows + padding * (rows + 1))) / 2);
+    const getPadding = (index: number) => (tileSize + padding) * index + padding + paddingAdjustment;
+
+    for (let i = 0; i < rows; i++) {
+        const y = getPadding(i);
+
+        for (let j = 0; j < rows; j++) {
+            const x = getPadding(j);
+            const tile = new Tile({ x: x, y: y, width: tileSize, height: tileSize });
+            matrix.push(tile);
+        }
     }
+
+    return matrix;
 }
