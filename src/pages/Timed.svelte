@@ -1,26 +1,27 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { TileManager } from "../components/TileManager";
+    import { TimedMode } from "../components/TimedMode";
 
     // import from some sort of config? or user choice?
     const rows = 4;
 
     let canvas: HTMLCanvasElement;
-    let tileManager: TileManager;
+    let timedMode: TimedMode;
 
     onMount(() => {
         const context = canvas.getContext("2d");
-        tileManager = new TileManager(context);
-        tileManager.createMatrix(canvas.width, rows);
-        tileManager.startGame(rows);
 
-        let def_time = 1000; // 30 seconds - 30000
+        timedMode = new TimedMode(context);
+
+        timedMode.start(canvas.width, rows);
+
+        let def_time = 30000; // 30 seconds - 30000
         const timer = document.getElementById("time");
 
         let inte = setInterval(() => {
             if (def_time <= 0) {
                 clearInterval(inte);
-                tileManager.stopGame(canvas.width);
+                timedMode.stop();
             }
 
             def_time -= 100;
@@ -49,7 +50,7 @@
 
     <canvas
         bind:this={canvas}
-        on:mousedown={(...args) => tileManager.handleClick(...args)}
+        on:mousedown={(...args) => timedMode.onClick(...args)}
         id="canvas"
         width={640}
         height={640}

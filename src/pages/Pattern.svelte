@@ -11,7 +11,6 @@
 
         patternMode.start(canvas.width, 4);
 
-        // const game = new Game(context, { type: GameType.PATTERN });
         // handle click is different for every mode
     });
 </script>

@@ -1,17 +1,12 @@
-import { ScoreManager } from "./ScoreManager";
 import { Tile } from "./Tile";
 
 export class TileManager {
     public context: CanvasRenderingContext2D;
-    public tileMatrix: Tile[];
-
-    public scoreBoard: ScoreManager;
+    public matrix: Tile[];
 
     public constructor(context: CanvasRenderingContext2D) {
         this.context = context;
-        this.tileMatrix = [];
-
-        this.scoreBoard = new ScoreManager();
+        this.matrix = [];
     }
 
     public createMatrix(width: number, rows: number) {
@@ -21,54 +16,25 @@ export class TileManager {
         const getPadding = (e: any) => (tileSize + padding) * e + padding + paddingAdjustment;
 
         for (let i = 0; i < rows; i++) {
-            let y = getPadding(i);
+            const y = getPadding(i);
 
             for (let j = 0; j < rows; j++) {
-                let x = getPadding(j);
-
-                this.tileMatrix.push(
-                    new Tile({ x: x, y: y, width: tileSize, height: tileSize })
-                );
+                const x = getPadding(j);
+                const tile = new Tile({ x: x, y: y, width: tileSize, height: tileSize });
+                this.matrix.push(tile);
             }
         }
     }
 
-    public startGame(rows: number) {
-        const tileMatrixLength = this.tileMatrix.length;
-
-        for (let i = 1; i < rows; i++) {
-            let index = Math.floor(Math.random() * tileMatrixLength);
-
-            while (this.tileMatrix[index].color === "black") {
-                index = Math.floor(Math.random() * tileMatrixLength);
-            }
-
-            this.tileMatrix[index].color = "black";
+    public drawTileMatrix() {
+        for (const tile of this.matrix) {
+            this.drawTile(tile);
         }
-
-        this.drawTileMatrix();
-    }
-
-    public stopGame(width: number) {
-        const boxWidth = width * 0.8;
-        const boxHeight = width * 0.6;
-
-        let x = (width / 2) - (boxWidth / 2);
-        let y = (width / 2) - (boxHeight / 2);
-
-        this.context.fillStyle = "red"
-        this.context.fillRect(x, y, boxWidth, boxHeight);
     }
 
     public drawTile(tile: Tile) {
         this.context.fillStyle = tile.color;
         this.context.fillRect(tile.x, tile.y, tile.width, tile.height);
-    }
-
-    public drawTileMatrix() {
-        for (const tile of this.tileMatrix) {
-            this.drawTile(tile);
-        }
     }
 
     public redrawTile(tile: Tile) {
@@ -77,7 +43,7 @@ export class TileManager {
     }
 
     public getTile(x: number, y: number): Tile {
-        return this.tileMatrix.find(tile =>
+        return this.matrix.find(tile =>
             x >= tile.x &&
             x < tile.x + tile.width &&
             y >= tile.y &&
@@ -86,48 +52,13 @@ export class TileManager {
     }
 
     public getRandomTile(lastTile: Tile): Tile {
-        let index = Math.floor(Math.random() * this.tileMatrix.length);
+        const matrixLength = this.matrix.length;
+        let index = Math.floor(Math.random() * matrixLength);
 
-        while (this.tileMatrix[index].color === "black" || this.tileMatrix[index] === lastTile) {
-            index = Math.floor(Math.random() * this.tileMatrix.length);
+        while (this.matrix[index].color === "black" || this.matrix[index] === lastTile) {
+            index = Math.floor(Math.random() * matrixLength);
         }
 
-        return this.tileMatrix[index];
-    }
-
-    public handleClick({ target, clientX, clientY }: any): any {
-        const bounds = target.getBoundingClientRect();
-        const clickedTile = this.getTile(clientX - bounds.left, clientY - bounds.top);
-
-        switch (clickedTile.color) {
-            case "white":
-                clickedTile.color = "crimson";
-                this.redrawTile(clickedTile);
-                clickedTile.color = "white";
-
-                setTimeout(() => {
-                    this.redrawTile(clickedTile);
-                    this.scoreBoard.updateScore();
-                }, 60);
-
-                break;
-            case "black":
-                clickedTile.color = "limegreen";
-                this.redrawTile(clickedTile);
-                clickedTile.color = "white";
-
-                setTimeout(() => {
-                    this.redrawTile(clickedTile);
-
-                    const randomTile = this.getRandomTile(clickedTile);
-                    randomTile.color = "black";
-                    this.redrawTile(randomTile);
-                    this.scoreBoard.updateScore(true);
-                }, 60);
-
-                break;
-            default:
-                break;
-        }
+        return this.matrix[index];
     }
 }
