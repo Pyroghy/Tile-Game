@@ -1,13 +1,19 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type { TileManager } from "../components/TileManager";
+    import { PatternMode } from "../components/PatternMode";
 
     let canvas: HTMLCanvasElement;
-    let tileManager: TileManager;
+    let patternMode: PatternMode;
 
-    // const game = new Game({ context: context, gamemode: GameType.PATTERN });
+    onMount(() => {
+        const context = canvas.getContext("2d");
+        patternMode = new PatternMode(context);
 
-    onMount(() => {});
+        patternMode.start(canvas.width, 4);
+
+        // const game = new Game(context, { type: GameType.PATTERN });
+        // handle click is different for every mode
+    });
 </script>
 
 <main>
@@ -26,13 +32,7 @@
         </section>
     </header>
 
-    <canvas
-        bind:this={canvas}
-        on:mousedown={(...args) => tileManager.handleClick(...args)}
-        id="canvas"
-        width={640}
-        height={640}
-    />
+    <canvas bind:this={canvas} id="canvas" width={640} height={640} />
 </main>
 
 <style>
