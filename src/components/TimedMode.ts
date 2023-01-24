@@ -5,7 +5,7 @@ export class TimedMode extends Gamemode {
         super(context);
     }
 
-    public start(width: number, rows: number): void {
+    public init(width: number, rows: number): void {
         this.createMatrix(width, rows);
 
         const tileMatrixLength = this.matrix.length;
@@ -21,6 +21,10 @@ export class TimedMode extends Gamemode {
         }
 
         this.drawTileMatrix();
+    }
+
+    public start(width: number, rows: number): void {
+        // on game start make screen to start game or return to menu
     }
 
     public stop(): void {

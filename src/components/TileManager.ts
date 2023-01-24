@@ -32,6 +32,10 @@ export class TileManager {
         }
     }
 
+    public redrawTileMatrix() {
+        this.matrix.forEach(tile => this.redrawTile(tile));
+    }
+    
     public drawTile(tile: Tile) {
         this.context.fillStyle = tile.color;
         this.context.fillRect(tile.x, tile.y, tile.width, tile.height);

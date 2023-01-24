@@ -5,9 +5,13 @@ export class PatternMode extends Gamemode {
         super(context);
     }
 
+    public init(...args: any[]): void {
+        throw new Error("Method not implemented.");
+    }
+
     public start(width: number, rows: number): void {
         this.createMatrix(width, rows);
-        
+
         const tileMatrixLength = this.matrix.length;
 
         for (let i = 1; i < rows; i++) {

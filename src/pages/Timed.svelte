@@ -13,7 +13,10 @@
 
         timedMode = new TimedMode(context);
 
+        // change to init
         timedMode.start(canvas.width, rows);
+
+        //
 
         let def_time = 30000; // 30 seconds - 30000
         const timer = document.getElementById("time");
