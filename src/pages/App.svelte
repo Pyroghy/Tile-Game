@@ -7,7 +7,7 @@
     let page;
 
     router("/", () => (page = Home));
-    router("/blog", () => (page = Game));
+    router("/game", () => (page = Game));
 
     router.start();
 </script>
