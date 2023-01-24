@@ -1,6 +1,7 @@
 * {
 	box-sizing: border-box;
 	font-family: "Segoe UI";
+	user-select: none;
 }
 
 body {
@@ -14,4 +15,8 @@ body {
 
 	width: 40rem;
 	height: 100vh;
+}
+
+main {
+	width: 40rem;
 }

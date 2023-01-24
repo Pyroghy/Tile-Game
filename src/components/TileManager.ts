@@ -1,12 +1,17 @@
+import { ScoreManager } from "./ScoreManager";
 import { Tile } from "./Tile";
 
 export class TileManager {
     public context: CanvasRenderingContext2D;
     public tileMatrix: Tile[];
 
+    public scoreBoard: ScoreManager;
+
     public constructor(context: CanvasRenderingContext2D) {
         this.context = context;
         this.tileMatrix = [];
+
+        this.scoreBoard = new ScoreManager();
     }
 
     public createMatrix(width: number, rows: number) {
@@ -82,7 +87,6 @@ export class TileManager {
     public handleClick({ target, clientX, clientY }: any): any {
         const bounds = target.getBoundingClientRect();
         const clickedTile = this.getTile(clientX - bounds.left, clientY - bounds.top);
-        console.log(clickedTile);
 
         switch (clickedTile.color) {
             case "white":
@@ -92,6 +96,7 @@ export class TileManager {
 
                 setTimeout(() => {
                     this.redrawTile(clickedTile);
+                    this.scoreBoard.updateScore();
                 }, 60);
 
                 break;
@@ -106,6 +111,7 @@ export class TileManager {
                     const randomTile = this.getRandomTile(clickedTile);
                     randomTile.color = "black";
                     this.redrawTile(randomTile);
+                    this.scoreBoard.updateScore(true);
                 }, 60);
 
                 break;

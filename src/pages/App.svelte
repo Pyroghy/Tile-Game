@@ -2,12 +2,12 @@
     import router from "page";
 
     import Home from "./Home.svelte";
-    import Game from "./Game.svelte";
+    import Timed from "./Timed.svelte";
 
     let page;
 
     router("/", () => (page = Home));
-    router("/game", () => (page = Game));
+    router("/timed", () => (page = Timed));
 
     router.start();
 </script>
