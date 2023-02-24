@@ -1,9 +1,11 @@
 export class TimedDisplay {
+    public document: Document;
     private scoreText: HTMLElement;
     private timeText: HTMLElement;
     private accuracyText: HTMLElement;
 
     public constructor(document: Document) {
+        this.document = document;
         this.scoreText = document.getElementById("score");
         this.timeText = document.getElementById("time");
         this.accuracyText = document.getElementById("accuracy");

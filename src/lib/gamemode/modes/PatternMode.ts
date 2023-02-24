@@ -47,7 +47,7 @@ export class PatternMode extends Gamemode {
                 this.context.textAlign = "center";
                 this.context.fillText(`Match Starts In ${seconds} Seconds`, baseH, baseH);
             } else if (seconds <= 0) {
-                this.tileManager.createMatrix();
+                this.tileManager.createMatrix(4);
                 this.tileManager.redrawTiles();
 
                 this.startTime = Date.now();
@@ -103,7 +103,7 @@ export class PatternMode extends Gamemode {
                 this.context.textAlign = "center";
                 this.context.fillText(`Match Starts In ${seconds} Seconds`, baseH, baseH);
             } else if (seconds <= 0) {
-                this.tileManager.createNextMatrix();
+                this.tileManager.createMatrix(4);
                 this.tileManager.redrawTiles();
 
                 this.startTime = Date.now();
@@ -192,7 +192,8 @@ export class PatternMode extends Gamemode {
                             return;
                         }
 
-                        this.tileManager.refreshTiles();
+                        this.tileManager.createMatrix(4);
+                        this.tileManager.redrawTiles();
                         this.startTime = Date.now();
                     }, 60);
                 }

@@ -30,7 +30,7 @@ export class TileManager extends TileMatrix {
     }
 
     public drawTiles() {
-        for (const tile of this.matrix) {
+        for (const tile of this.tiles) {
             this.draw(tile);
         }
     }
@@ -38,10 +38,5 @@ export class TileManager extends TileMatrix {
     public redrawTiles() {
         this.context.clearRect(0, 0, this.width, this.width);
         this.drawTiles();
-    }
-
-    public refreshTiles() {
-        this.createNextMatrix();
-        this.redrawTiles();
     }
 }

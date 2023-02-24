@@ -1,93 +1,76 @@
-import { Tile } from "../structures/Tile";
+import { Tile } from "./Tile";
 
 export class TileMatrix {
     public width: number;
-    public rows: number;
+    public matrixWidth: number;
 
-    public matrix: Tile[] = [];
+    public tileWidth: number;
+    public matrixGap: number;
+    public matrixPadding: number;
 
-    public constructor(width: number, rows: number) {
+    public tiles: Tile[];
+
+    public constructor(width: number, matrixWidth: number) {
         this.width = width;
-        this.rows = rows;
+        this.matrixWidth = matrixWidth;
+
+        this.tileWidth = Math.round((this.width / this.matrixWidth) * 0.98);
+        this.matrixGap = Math.round((this.width - this.tileWidth * this.matrixWidth) / (this.matrixWidth + 1));
+        this.matrixPadding = Math.abs((this.width - (this.tileWidth * this.matrixWidth + this.matrixGap * (this.matrixWidth + 1))) / 2);
+
+        this.tiles = this.createBlankMatrix();
     }
 
-    public createMatrix() {
-        const tileSize = Math.round((this.width / this.rows) * 0.98);
-        const padding = Math.round((this.width - tileSize * this.rows) / (this.rows + 1));
-        const paddingAdjustment = Math.abs((this.width - (tileSize * this.rows + padding * (this.rows + 1))) / 2);
-        const getPadding = (e: any) => (tileSize + padding) * e + padding + paddingAdjustment;
+    public getMatrixCoordinate(index: number): number {
+        return (this.tileWidth + this.matrixGap) * index + this.matrixGap + this.matrixPadding;
+    }
 
-        // generates it
-        for (let i = 0; i < this.rows; i++) {
-            const y = getPadding(i);
+    public createBlankMatrix(): Tile[] {
+        const matrix = [];
 
-            for (let j = 0; j < this.rows; j++) {
-                const x = getPadding(j);
-                const tile = new Tile(x, y, tileSize, tileSize);
-                this.matrix.push(tile);
+        for (let i = 0; i < this.matrixWidth; i++) {
+            const y = this.getMatrixCoordinate(i);
+
+            for (let j = 0; j < this.matrixWidth; j++) {
+                const x = this.getMatrixCoordinate(j);
+                const tile = new Tile(x, y, this.tileWidth, this.tileWidth);
+                matrix.push(tile);
             }
         }
 
-        // makes 4 random tiles black
-        for (let i = 0; i < this.rows; i++) {
-            const randomTile = this.getRandomTile();
-            randomTile.color = "black";
-        }
+        return matrix;
     }
 
-    public createNextMatrix() {
-        const nextMatrix = [];
+    public createMatrix(tileCount: number): void {
+        const matrix = this.createBlankMatrix();
 
-        const tileSize = Math.round((this.width / this.rows) * 0.98);
-        const padding = Math.round((this.width - tileSize * this.rows) / (this.rows + 1));
-        const paddingAdjustment = Math.abs((this.width - (tileSize * this.rows + padding * (this.rows + 1))) / 2);
-        const getPadding = (e: any) => (tileSize + padding) * e + padding + paddingAdjustment;
-
-        // generates it
-        for (let i = 0; i < this.rows; i++) {
-            const y = getPadding(i);
-
-            for (let j = 0; j < this.rows; j++) {
-                const x = getPadding(j);
-                const tile = new Tile(x, y, tileSize, tileSize);
-                nextMatrix.push(tile)
-            }
-        }
-
-        // makes 4 random tiles black
-        for (let i = 0; i < this.rows; i++) {
+        for (let i = 0; i < tileCount; i++) {
             let randomTile = this.getRandomTile();
-            let tileIndex = this.matrix.indexOf(randomTile);
+            let randomIndex = this.tiles.indexOf(randomTile);
 
-            while (this.matrix[tileIndex].color === "green") {
+            while (matrix[randomIndex].color !== "white") {
                 randomTile = this.getRandomTile();
-                tileIndex = this.matrix.indexOf(randomTile);
+                randomIndex = this.tiles.indexOf(randomTile);
             }
 
-            nextMatrix[tileIndex] = randomTile;
-            nextMatrix[tileIndex].color = "black";
+            matrix[randomIndex] = randomTile;
+            matrix[randomIndex].color = "black";
         }
 
-        this.matrix = nextMatrix;
+        this.tiles = matrix;
     }
 
     public getTile(x: number, y: number): Tile {
-        return this.matrix.find(tile => x >= tile.x && x < tile.x + tile.width && y >= tile.y && y < tile.y + tile.height);
+        return this.tiles.find(tile => x >= tile.x && x < tile.x + tile.width && y >= tile.y && y < tile.y + tile.height);
     }
 
     public getRandomTile(): Tile {
+        let randomIndex = Math.floor(Math.random() * this.tiles.length);
 
-        if (this.matrix.length <= 0) {
-            console.log("Matrix is empty!");
-            return;
+        while (this.tiles[randomIndex].color !== "white") {
+            randomIndex = Math.floor(Math.random() * this.tiles.length);
         }
 
-        let randomIndex = Math.floor(Math.random() * this.matrix.length);
-
-        while (this.matrix[randomIndex].color === "black") {
-            randomIndex = Math.floor(Math.random() * this.matrix.length);
-        }
-
-        return this.matrix[randomIndex];
+        return this.tiles[randomIndex];
     }
 }

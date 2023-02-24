@@ -1,12 +1,11 @@
 import { Manager } from "socket.io-client";
 import { GameDisplay } from "../../structures/GameDisplay";
-import type { PatternMode } from "../../structures/PatternMode";
 
 export class Client extends Manager {
     public display = new GameDisplay(document);
     public canvas: HTMLCanvasElement;
     public context: CanvasRenderingContext2D;
-    public gamemode: PatternMode;
+    public gamemode: any;
 
     public room: any;
     public socket: any;

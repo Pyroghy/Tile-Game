@@ -41,7 +41,7 @@ export class TimedMode extends Gamemode {
                 this.context.textAlign = "center";
                 this.context.fillText(`Match Starts In ${seconds} Seconds`, 320, 320);
             } else if (seconds <= 0) {
-                this.tileManager.createMatrix();
+                this.tileManager.createMatrix(3);
                 this.tileManager.redrawTiles();
 
                 this.startTime = Date.now();
@@ -57,29 +57,14 @@ export class TimedMode extends Gamemode {
     }
 
     public stop(): void {
-        this.context.fillStyle = "#212121";
-        this.context.fillRect(80, 160, 480, 320);
+        const menu = this.display.document.getElementById("menu");
 
-        this.context.fillStyle = "white";
-        this.context.font = "32px Segoe UI";
-        this.context.textAlign = "center";
-        this.context.fillText("Match Has Ended!", 320, 240);
+        menu.style.display = "flex";
+        menu.style.flexDirection = "column";
+        menu.style.justifyContent = "center";
+        menu.style.alignItems = "center";
 
-        this.context.fillStyle = "blue";
-        this.context.fillRect(200, 390, 100, 50);
-
-        this.context.fillStyle = "black";
-        this.context.font = "16px Segoe UI";
-        this.context.textAlign = "center";
-        this.context.fillText("Restart", 320, 420);
-
-        this.context.fillStyle = "red";
-        this.context.fillRect(320, 390, 100, 50);
-
-        this.context.fillStyle = "black";
-        this.context.font = "16px Segoe UI";
-        this.context.textAlign = "center";
-        this.context.fillText("Leave", 320, 420);
+        this.canvas.style.display = "none";
 
         this.gameState = false;
 
