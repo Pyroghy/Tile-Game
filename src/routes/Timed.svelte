@@ -1,24 +1,31 @@
 <script lang="ts">
+    import page from "page";
     import TimedCanvas from "../components/TimedCanvas.svelte";
-    import TimedOver from "../components/TimedOver.svelte";
+    import TimedMenu from "../components/TimedMenu.svelte";
 
-    let gameStatus = true;
+    let component: any = TimedCanvas;
+    let options: any = {};
 
-    let score: number;
-    let accuracy: number;
+    function handleStop(event: any) {
+        options.score = event.detail.score;
+        options.accuracy = event.detail.accuracy;
 
-    function handle(e: any) {
-        gameStatus = !gameStatus;
+        component = TimedMenu;
+    }
 
-        if (gameStatus) {
-            score = e.detail.score;
-            accuracy = e.detail.accuracy;
-        }
+    function handleRestart() {
+        component = TimedCanvas;
+    }
+
+    function handleLeave() {
+        page.redirect("/");
     }
 </script>
 
-{#if gameStatus}
-    <TimedCanvas on:gameOver={handle} />
-{:else if !gameStatus}
-    <TimedOver on:message={handle} {score} {accuracy} />
-{/if}
+<svelte:component
+    this={component}
+    on:stop={handleStop}
+    on:restart={handleRestart}
+    on:leave={handleLeave}
+    {options}
+/>

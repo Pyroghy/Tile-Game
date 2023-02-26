@@ -1,78 +1,31 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount } from "svelte";
-    import { TimedDisplay } from "../lib/client/structures/TimedDisplay";
+    import { createEventDispatcher } from "svelte";
     import { TimedMode } from "../lib/gamemode/modes/TimedMode";
+    import GameScreen from "./game/GameScreen.svelte";
+
+    export let options: any;
+    console.log(options);
 
     const dispatch = createEventDispatcher();
 
-    let canvas: HTMLCanvasElement;
-    let timed: TimedMode;
+    const timed = new TimedMode();
 
-    onMount(() => {
-        canvas.width =
-            window.innerWidth < canvas.width
-                ? canvas.clientWidth
-                : canvas.width;
-        canvas.height = canvas.width;
+    function handleStart() {
+        timed.display.createCanvas();
+        timed.display.tileManager.createMatrix(3);
+        timed.display.tileManager.redrawTiles();
 
-        timed = new TimedMode(canvas);
-        timed.display = new TimedDisplay(document);
-        timed.start();
+        timed.startTime = Date.now();
+    }
 
-        let timeLeft = 5; //31;
-
-        const countdown = setInterval(() => {
-            if (!timed.gameState) return;
-
-            timeLeft--;
-
-            if (timeLeft > 0) {
-                timed.display.updateTime(timeLeft);
-            } else if (timeLeft <= 0) {
-                timed.display.updateTime(timeLeft);
-
-                dispatch("gameOver", {
-                    score: timed.score,
-                    accuracy:
-                        (timed.totalBlackHits /
-                            (timed.totalBlackHits + timed.totalWhiteHits)) *
-                        100,
-                });
-
-                timed.stop();
-
-                clearInterval(countdown);
-            }
-        }, 1000);
-    });
-
-    function handleClick({ target, clientX, clientY }: any) {
-        const bounds = target.getBoundingClientRect();
-        const clickedTile = timed.tileManager.getTile(
-            clientX - bounds.left,
-            clientY - bounds.top
-        );
-
-        const getClicked = (x: number, y: number, w: number, h: number) =>
-            clientX - bounds.left >= x &&
-            clientX - bounds.left < x + w &&
-            clientY - bounds.top >= y &&
-            clientY - bounds.top < y + h;
-
-        if (!timed.gameState) {
-            const lobbyButton = getClicked(320, 390, 100, 50);
-            const restartButton = getClicked(200, 390, 100, 50);
-
-            if (lobbyButton) {
-                timed.stop();
-            } else if (restartButton) {
-                timed.restart();
-            }
-
-            return;
-        } else if (!clickedTile) return;
-
-        timed.onClick(clickedTile);
+    function handleStopFirst() {
+        dispatch("stop", {
+            score: timed.score,
+            accuracy:
+                (timed.totalBlackHits /
+                    (timed.totalBlackHits + timed.totalWhiteHits)) *
+                100,
+        });
     }
 </script>
 
@@ -94,19 +47,12 @@
         </article>
     </header>
 
-    <canvas
-        on:mousedown={handleClick}
-        bind:this={canvas}
-        width={640}
-        height={640}
+    <svelte:component
+        this={GameScreen}
+        on:start={handleStart}
+        on:stopFirst={handleStopFirst}
+        gamemode={timed}
     />
-
-    <section id="menu" style="display:none">
-        <h1>GAME OVER!</h1>
-
-        <button>Restart</button>
-        <button>Leave</button>
-    </section>
 
     <footer>
         <button on:click={timed.restart}>Restart</button>
@@ -125,28 +71,12 @@
         height: 100vh;
     }
 
-    canvas {
-        cursor: crosshair;
-
-        width: min(40rem, 100vw);
-        height: min(40rem, 100vw);
-
-        background-color: aqua;
-    }
-
-    section {
-        width: min(40rem, 100vw);
-        height: min(40rem, 100vw);
-
-        background-color: aqua;
-    }
-
     header,
     footer {
         width: min(40rem, 100vw);
         height: calc(((100vh - 40rem) / 2) * 0.75);
 
-        background-color: black;
+        background-color: #121212;
     }
 
     header {

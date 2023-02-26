@@ -16,35 +16,13 @@ export class TimedMode extends Gamemode {
     public totalBlackHits = 0;
     public totalWhiteHits = 0;
 
-    public start(): void {
+    public async start(): Promise<void> {
         let seconds = 5;
-
-        this.context.clearRect(80, 160, 480, 320);
-        this.context.fillStyle = "#212121";
-        this.context.fillRect(80, 160, 480, 320);
-
-        this.context.fillStyle = "white";
-        this.context.font = "32px Segoe UI";
-        this.context.textAlign = "center";
-        this.context.fillText(`Match Starts In ${seconds} Seconds`, 320, 320);
 
         const countdown = setInterval(() => {
             seconds--;
 
-            if (seconds > 0) {
-                this.context.clearRect(80, 160, 480, 320);
-                this.context.fillStyle = "#212121";
-                this.context.fillRect(80, 160, 480, 320);
-
-                this.context.fillStyle = "white";
-                this.context.font = "32px Segoe UI";
-                this.context.textAlign = "center";
-                this.context.fillText(`Match Starts In ${seconds} Seconds`, 320, 320);
-            } else if (seconds <= 0) {
-                this.tileManager.createMatrix(3);
-                this.tileManager.redrawTiles();
-
-                this.startTime = Date.now();
+            if (seconds <= 0) {
                 this.gameState = true;
 
                 clearInterval(countdown);
@@ -57,15 +35,6 @@ export class TimedMode extends Gamemode {
     }
 
     public stop(): void {
-        const menu = this.display.document.getElementById("menu");
-
-        menu.style.display = "flex";
-        menu.style.flexDirection = "column";
-        menu.style.justifyContent = "center";
-        menu.style.alignItems = "center";
-
-        this.canvas.style.display = "none";
-
         this.gameState = false;
 
         this.score = 0;
@@ -86,7 +55,7 @@ export class TimedMode extends Gamemode {
             this.blackHits++;
             this.totalBlackHits++;
 
-            this.tileManager.redraw(clickedTile, { color: "limegreen" });
+            this.display.tileManager.redraw(clickedTile, { color: "limegreen" });
 
             const accuracy = this.blackHits / (this.blackHits + this.whiteHits);
             const time = (Date.now() - this.startTime) / 1000;
@@ -94,7 +63,7 @@ export class TimedMode extends Gamemode {
             this.score += Math.round((this.blackHits * accuracy) * (1 / time + 1));
 
             setTimeout(() => {
-                this.tileManager.redraw(clickedTile, { color: "white" });
+                this.display.tileManager.redraw(clickedTile, { color: "white" });
                 this.display.updateScore(this.score);
                 this.display.updateAccuracy((this.totalBlackHits / (this.totalBlackHits + this.totalWhiteHits)) * 100);
 
@@ -102,9 +71,9 @@ export class TimedMode extends Gamemode {
                 this.whiteHits = 0;
                 this.startTime = Date.now();
 
-                const randomTile = this.tileManager.getRandomTile();
+                const randomTile = this.display.tileManager.getRandomTile();
                 randomTile.color = "black";
-                this.tileManager.redraw(randomTile);
+                this.display.tileManager.redraw(randomTile);
 
                 clickedTile.color = "white";
             }, 60);
@@ -112,10 +81,10 @@ export class TimedMode extends Gamemode {
             this.whiteHits++;
             this.totalWhiteHits++;
 
-            this.tileManager.redraw(clickedTile, { color: "crimson" });
+            this.display.tileManager.redraw(clickedTile, { color: "crimson" });
 
             setTimeout(() => {
-                this.tileManager.redraw(clickedTile, { color: "white" });
+                this.display.tileManager.redraw(clickedTile, { color: "white" });
                 this.display.updateAccuracy((this.totalBlackHits / (this.totalBlackHits + this.totalWhiteHits)) * 100);
             }, 60);
         }
