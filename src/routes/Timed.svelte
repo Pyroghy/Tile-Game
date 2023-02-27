@@ -21,12 +21,7 @@
 
     function handleStop(event: any) {
         component = TimedEnd;
-
-        const score = document.getElementById("final-score");
-        const accuracy = document.getElementById("final-accuracy");
-
-        score.innerText = event.detail.score.toString();
-        accuracy.innerText = event.detail.accuracy.toFixed(2) + "%";
+        data = event.detail;
     }
 
     function handleLeave() {
