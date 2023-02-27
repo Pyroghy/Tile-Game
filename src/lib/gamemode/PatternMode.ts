@@ -40,7 +40,7 @@ export class PatternMode {
                         this.whiteHits = 0;
                         this.round++;
 
-                        if (this.round >= 5) {
+                        if (this.round >= 20) {
                             callback();
                         }
 
