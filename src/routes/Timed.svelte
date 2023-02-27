@@ -1,20 +1,23 @@
 <script lang="ts">
     import page from "page";
 
-    import TimedDisplay from "../components/TimedDisplay.svelte";
-    import TimedEnd from "../components/TimedEnd.svelte";
+    import TimedGame from "../components/timed/TimedGame.svelte";
+    import TimedEnd from "../components/timed/TimedEnd.svelte";
 
-    let component: any = TimedDisplay;
-
-    function handleEnd(event: any) {
-        component = TimedEnd;
-
-        document.getElementById("score").innerText = event.detail.score;
-        document.getElementById("acc").innerText = event.detail.accuracy;
-    }
+    let component: any = TimedGame;
 
     function handleRestart() {
-        component = TimedDisplay;
+        component = TimedGame;
+    }
+
+    function handleStop(event: any) {
+        component = TimedEnd;
+
+        const score = document.getElementById("final-score");
+        const accuracy = document.getElementById("final-accuracy");
+
+        score.innerText = event.detail.score.toString();
+        accuracy.innerText = event.detail.accuracy.toFixed(2) + "%";
     }
 
     function handleLeave() {
@@ -23,7 +26,7 @@
 </script>
 
 <main>
-    <svelte:component this={component} on:end={handleEnd} />
+    <svelte:component this={component} on:end={handleStop} />
 
     <footer>
         <button on:click={handleRestart}>Restart</button>

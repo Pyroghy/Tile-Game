@@ -20,8 +20,7 @@
 </script>
 
 <section>
-    Game Starts in <h2 id="countdown">3</h2>
-    Seconds!
+    <h1>Game Starts In <strong id="countdown">3</strong> Seconds!</h1>
 </section>
 
 <style>
@@ -35,5 +34,9 @@
 
         border-radius: 1rem;
         background-color: #121212;
+    }
+
+    h1 {
+        font-size: 3rem;
     }
 </style>

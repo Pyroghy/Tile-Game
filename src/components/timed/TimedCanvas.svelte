@@ -17,7 +17,7 @@
         timed.display.tileManager.createMatrix(3);
         timed.display.tileManager.redrawTiles();
 
-        let timeLeft = 5;
+        let timeLeft = 1;
 
         const gameTimer = setInterval(() => {
             timeLeft--;
@@ -25,12 +25,11 @@
             timed.display.updateTime(timeLeft);
 
             if (timeLeft <= 0) {
+                const totalHits = timed.totalBlackHits + timed.totalWhiteHits;
+
                 dispatch("stop", {
                     score: timed.score,
-                    accuracy:
-                        (timed.totalBlackHits /
-                            (timed.totalBlackHits + timed.totalWhiteHits)) *
-                        100,
+                    accuracy: (timed.totalBlackHits / totalHits) * 100,
                 });
 
                 timed.stop();

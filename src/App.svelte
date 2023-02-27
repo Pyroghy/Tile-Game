@@ -1,5 +1,5 @@
 <script lang="ts">
-    import router from "page";
+    import page from "page";
 
     // import routes from "./routes";
 
@@ -10,17 +10,17 @@
     import Multiplayer from "./routes/Multiplayer.svelte";
 
     // get correct type dec
-    let page: any;
+    let component: any;
 
     // add 404 page
 
-    router("/", () => (page = Home));
+    page("/", () => (component = Home));
 
-    router("/timed", () => (page = Timed));
-    router("/pattern", () => (page = Pattern));
-    router("/multiplayer", () => (page = Multiplayer));
+    page("/timed", () => (component = Timed));
+    page("/pattern", () => (component = Pattern));
+    page("/multiplayer", () => (component = Multiplayer));
 
-    router.start();
+    page.start();
 </script>
 
-<svelte:component this={page} />
+<svelte:component this={component} />

@@ -1,9 +1,9 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
 
-    import TimedScoreboard from "./timed/TimedScoreboard.svelte";
-    import TimedCanvas from "./timed/TimedCanvas.svelte";
-    import TimedStart from "./timed/TimedStart.svelte";
+    import TimedScoreboard from "./TimedScoreboard.svelte";
+    import TimedCanvas from "./TimedCanvas.svelte";
+    import TimedStart from "./TimedStart.svelte";
 
     const dispatch = createEventDispatcher();
     let component: any = TimedStart;
