@@ -1,86 +1,35 @@
 <script lang="ts">
     import page from "page";
-    import { onMount } from "svelte";
-    import { PatternDisplay } from "../lib/client/structures/PatternDisplay";
-    import { PatternMode } from "../lib/gamemode/PatternMode";
 
-    let canvas: HTMLCanvasElement;
-    let pattern: PatternMode;
+    import PatternGame from "../components/pattern/PatternGame.svelte";
+    import PatternEnd from "../components/pattern/PatternEnd.svelte";
 
-    onMount(() => {
-        canvas.width =
-            window.innerWidth < canvas.width
-                ? canvas.clientWidth
-                : canvas.width;
-        canvas.height = canvas.width;
+    let component: any = PatternGame;
 
-        pattern = new PatternMode(canvas);
-        pattern.display = new PatternDisplay(document);
-        pattern.start();
-    });
+    function handleRestart() {
+        component = PatternGame;
+    }
 
-    function handleClick({ target, clientX, clientY }: any) {
-        const bounds = target.getBoundingClientRect();
-        const clickedTile = pattern.tileManager.getTile(
-            clientX - bounds.left,
-            clientY - bounds.top
-        );
+    function handleStop(event: any) {
+        component = PatternEnd;
 
-        const getClicked = (x: number, y: number, w: number, h: number) =>
-            clientX - bounds.left >= x &&
-            clientX - bounds.left < x + w &&
-            clientY - bounds.top >= y &&
-            clientY - bounds.top < y + h;
+        const score = document.getElementById("final-score");
+        const accuracy = document.getElementById("final-accuracy");
 
-        if (!pattern.gameState) {
-            const lobbyButton = getClicked(320, 390, 100, 50);
-            const restartButton = getClicked(200, 390, 100, 50);
-
-            if (lobbyButton) {
-                pattern.stop();
-            } else if (restartButton) {
-                pattern.restart();
-            }
-
-            return;
-        } else if (!clickedTile) return;
-
-        pattern.onClick(clickedTile);
+        score.innerText = event.detail.score.toString();
+        accuracy.innerText = event.detail.accuracy.toFixed(2) + "%";
     }
 
     function handleLeave() {
-        pattern.stop();
         page.redirect("/");
     }
 </script>
 
 <main>
-    <header>
-        <article>
-            <h1>SCORE</h1>
-            <h3 id="score">0</h3>
-        </article>
-
-        <article>
-            <h1>ROUND</h1>
-            <h2 id="round">0</h2>
-        </article>
-
-        <article>
-            <h1>ACCURACY</h1>
-            <h3 id="accuracy">100.00%</h3>
-        </article>
-    </header>
-
-    <canvas
-        on:mousedown={handleClick}
-        bind:this={canvas}
-        width={640}
-        height={640}
-    />
+    <svelte:component this={component} on:end={handleStop} />
 
     <footer>
-        <button on:click={pattern.restart}>Restart</button>
+        <button on:click={handleRestart}>Restart</button>
         <button on:click={handleLeave}>Leave</button>
     </footer>
 </main>
@@ -96,37 +45,6 @@
         height: 100vh;
     }
 
-    canvas {
-        cursor: crosshair;
-
-        width: min(40rem, 100vw);
-        height: min(40rem, 100vw);
-
-        background-color: aqua;
-    }
-
-    header,
-    footer {
-        width: min(40rem, 100vw);
-        height: calc(((100vh - 40rem) / 2) * 0.75);
-
-        background-color: black;
-    }
-
-    header {
-        display: flex;
-        flex-direction: row;
-
-        justify-content: space-evenly;
-        align-items: center;
-
-        border-radius: 1rem;
-    }
-
-    header > article {
-        width: 12rem;
-    }
-
     footer {
         display: flex;
         flex-direction: row;
@@ -134,19 +52,27 @@
         justify-content: space-evenly;
         align-items: center;
 
+        width: min(40rem, 100vw);
+        height: calc(((100vh - min(40rem, 100vw)) / 2) * 0.75);
+
         border-radius: 1rem;
+        background-color: #121212;
     }
 
-    footer > button {
+    button {
         cursor: pointer;
 
         width: 12rem;
         height: 3rem;
 
         text-align: center;
+        font-weight: 500;
+        color: white;
+        font-size: 1.5rem;
 
         border: none;
         border-radius: 0.5rem;
         background-color: #5539cc;
+        box-shadow: 1px 2px aqua;
     }
 </style>
