@@ -17,7 +17,7 @@
         timed.display.tileManager.createMatrix(3);
         timed.display.tileManager.redrawTiles();
 
-        let timeLeft = 1;
+        let timeLeft = 30;
 
         const gameTimer = setInterval(() => {
             timeLeft--;
