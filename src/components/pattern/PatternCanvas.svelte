@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher, onMount } from "svelte";
-    import { PatternDisplay } from "../../lib/client/structures/PatternDisplay";
+    import { PatternDisplay } from "../../lib/client/PatternDisplay";
     import { PatternMode } from "../../lib/gamemode/PatternMode";
 
     const dispatch = createEventDispatcher();
@@ -26,9 +26,7 @@
         );
 
         if (clickedTile) {
-            pattern.onClick(clickedTile);
-
-            if (pattern.round >= 5) {
+            pattern.onClick(clickedTile, () => {
                 const totalHits =
                     pattern.totalBlackHits + pattern.totalWhiteHits;
 
@@ -36,9 +34,7 @@
                     score: pattern.score,
                     accuracy: (pattern.totalBlackHits / totalHits) * 100,
                 });
-
-                pattern.stop();
-            }
+            });
         }
     }
 </script>

@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher, onMount } from "svelte";
-    import { TimedDisplay } from "../../lib/client/structures/TimedDisplay";
+    import { TimedDisplay } from "../../lib/client/TimedDisplay";
     import { TimedMode } from "../../lib/gamemode/TimedMode";
 
     const dispatch = createEventDispatcher();

@@ -5,6 +5,15 @@
     import PatternEnd from "../components/pattern/PatternEnd.svelte";
 
     let component: any = PatternGame;
+    let data: any;
+
+    function handleLoad() {
+        const score = document.getElementById("final-score");
+        const accuracy = document.getElementById("final-accuracy");
+
+        score.innerText = data.score.toString();
+        accuracy.innerText = data.accuracy.toFixed(2) + "%";
+    }
 
     function handleRestart() {
         component = PatternGame;
@@ -12,12 +21,7 @@
 
     function handleStop(event: any) {
         component = PatternEnd;
-
-        const score = document.getElementById("final-score");
-        const accuracy = document.getElementById("final-accuracy");
-
-        score.innerText = event.detail.score.toString();
-        accuracy.innerText = event.detail.accuracy.toFixed(2) + "%";
+        data = event.detail;
     }
 
     function handleLeave() {
@@ -26,7 +30,11 @@
 </script>
 
 <main>
-    <svelte:component this={component} on:end={handleStop} />
+    <svelte:component
+        this={component}
+        on:end={handleStop}
+        on:load={handleLoad}
+    />
 
     <footer>
         <button on:click={handleRestart}>Restart</button>

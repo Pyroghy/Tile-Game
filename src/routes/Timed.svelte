@@ -5,6 +5,15 @@
     import TimedEnd from "../components/timed/TimedEnd.svelte";
 
     let component: any = TimedGame;
+    let data: any;
+
+    function handleLoad() {
+        const score = document.getElementById("final-score");
+        const accuracy = document.getElementById("final-accuracy");
+
+        score.innerText = data.score.toString();
+        accuracy.innerText = data.accuracy.toFixed(2) + "%";
+    }
 
     function handleRestart() {
         component = TimedGame;
@@ -26,7 +35,11 @@
 </script>
 
 <main>
-    <svelte:component this={component} on:end={handleStop} />
+    <svelte:component
+        this={component}
+        on:end={handleStop}
+        on:load={handleLoad}
+    />
 
     <footer>
         <button on:click={handleRestart}>Restart</button>

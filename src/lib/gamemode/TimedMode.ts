@@ -1,4 +1,4 @@
-import type { TimedDisplay } from "../client/structures/TimedDisplay";
+import type { TimedDisplay } from "../client/TimedDisplay";
 import type { Tile } from "../structures/Tile";
 import { Gamemode } from "./Gamemode";
 

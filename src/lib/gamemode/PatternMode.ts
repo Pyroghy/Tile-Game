@@ -1,8 +1,7 @@
-import type { PatternDisplay } from "../client/structures/PatternDisplay";
+import type { PatternDisplay } from "../client/PatternDisplay";
 import type { Tile } from "../structures/Tile";
-import { Gamemode } from "./Gamemode";
 
-export class PatternMode extends Gamemode {
+export class PatternMode {
     public display: PatternDisplay;
 
     public startTime: number;
@@ -17,19 +16,7 @@ export class PatternMode extends Gamemode {
     public totalBlackHits = 0;
     public totalWhiteHits = 0;
 
-    public start(): void {
-        console.log("START");
-    }
-
-    public restart(): void {
-        console.log("RESTART");
-    }
-
-    public stop(): void {
-        console.log("STOP");
-    }
-
-    public onClick(clickedTile: Tile): void {
+    public onClick(clickedTile: Tile, callback: any): void {
         if (clickedTile.color === "black") {
             this.blackHits++;
             this.totalBlackHits++;
@@ -52,6 +39,10 @@ export class PatternMode extends Gamemode {
                         this.blackHits = 0;
                         this.whiteHits = 0;
                         this.round++;
+
+                        if (this.round >= 5) {
+                            callback();
+                        }
 
                         this.display.updateScore(this.score);
                         this.display.updateRound(this.round);

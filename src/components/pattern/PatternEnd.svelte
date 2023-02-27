@@ -1,3 +1,13 @@
+<script lang="ts">
+    import { createEventDispatcher, onMount } from "svelte";
+
+    const dispatch = createEventDispatcher();
+
+    onMount(() => {
+        dispatch("load");
+    });
+</script>
+
 <section>
     <h1>GAME OVER!</h1>
 
