@@ -2,7 +2,7 @@
     import page from "page";
     import { onMount } from "svelte";
     import { PatternDisplay } from "../lib/client/structures/PatternDisplay";
-    import { PatternMode } from "../lib/gamemode/modes/PatternMode";
+    import { PatternMode } from "../lib/gamemode/PatternMode";
 
     let canvas: HTMLCanvasElement;
     let pattern: PatternMode;
