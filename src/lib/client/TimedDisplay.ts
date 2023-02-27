@@ -28,23 +28,6 @@ export class TimedDisplay {
         this.tileManager = new TileManager(context, { width: 640, rows: 4 });
     }
 
-    public showCanvas() {
-        const countdown = this.document.getElementById("canvas");
-        countdown.style.display = "block";
-    }
-
-    public hideCountdown() {
-        const countdown = this.document.getElementById("start");
-        countdown.style.display = "none";
-    }
-
-    public updateCountdown(time: number) {
-        const countdown = this.document.getElementById("countdown");
-        countdown.innerText = time.toString();
-    }
-
-
-    
     public updateScore(score: number): void {
         this.scoreText.innerText = score.toString();
     }
