@@ -15,12 +15,11 @@ body {
     margin: 0;
     display: flex;
     place-items: center;
-    width: min(40rem, 100vw);
-    max-height: 100vh;
+    min-width: 320px;
+    min-height: 100vh;
 }
 
 #app {
     margin: 0 auto;
     text-align: center;
-    width: min(40rem, 100vw);
 }
