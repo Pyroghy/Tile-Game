@@ -45,9 +45,8 @@
     section {
         display: flex;
         flex-direction: column;
-        place-items: center;
-
-        gap: 1rem;
+        justify-content: space-evenly;
+        align-items: center;
     }
 
     button {
