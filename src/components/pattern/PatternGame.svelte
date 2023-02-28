@@ -1,9 +1,9 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
 
-    import PatternScoreboard from "./PatternScoreboard.svelte";
     import PatternCanvas from "./PatternCanvas.svelte";
     import PatternStart from "./PatternStart.svelte";
+    import Scoreboard from "../Scoreboard.svelte";
 
     const dispatch = createEventDispatcher();
     let component: any = PatternStart;
@@ -17,7 +17,7 @@
     }
 </script>
 
-<svelte:component this={PatternScoreboard} />
+<svelte:component this={Scoreboard} type="pattern"/>
 <svelte:component
     this={component}
     on:start={handleStart}

@@ -13,7 +13,7 @@ export class PatternDisplay {
         this.document = document;
 
         this.scoreText = document.getElementById("score");
-        this.roundText = document.getElementById("round");
+        this.roundText = document.getElementById("counter");
         this.accuracyText = document.getElementById("accuracy");
     }
 

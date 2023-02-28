@@ -13,7 +13,7 @@ export class TimedDisplay {
         this.document = document;
 
         this.scoreText = document.getElementById("score");
-        this.timeText = document.getElementById("time");
+        this.timeText = document.getElementById("counter");
         this.accuracyText = document.getElementById("accuracy");
     }
 
