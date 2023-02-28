@@ -54,10 +54,10 @@
         cursor: pointer;
 
         width: calc(min(40rem, 100vw) * 0.625);
-        height: 5rem;
+        height: calc((min(40rem, 100vw) * 0.625) / 5);
 
         text-align: center;
-        line-height: 5rem;
+        line-height: calc((min(40rem, 100vw) * 0.625) / 5);
         font-size: 1.5rem;
 
         border: none;
