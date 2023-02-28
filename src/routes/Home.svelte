@@ -2,20 +2,14 @@
     import page from "page";
 
     function enterTimed() {
-        console.log("timed");
-
         page.redirect("/timed");
     }
 
     function enterPattern() {
-        console.log("pattern");
-
         page.redirect("/pattern");
     }
 
     function enterMultiplayer() {
-        console.log("multiplayer");
-
         page.redirect("/multiplayer");
     }
 </script>
