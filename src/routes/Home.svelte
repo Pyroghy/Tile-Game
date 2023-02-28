@@ -36,7 +36,7 @@
         flex-direction: column;
         justify-content: space-evenly;
 
-        width: 40rem;
+        width: min(40rem, 100vw);
         height: 100vh;
 
         background-color: #121212;
@@ -50,10 +50,10 @@
         gap: 1rem;
     }
 
-    section > button {
+    button {
         cursor: pointer;
 
-        width: 25rem;
+        width: calc(min(40rem, 100vw) * 0.625);
         height: 5rem;
 
         text-align: center;
