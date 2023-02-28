@@ -36,7 +36,7 @@
         flex-direction: column;
         justify-content: space-evenly;
 
-        width: 40rem;
+        width: min(40rem, 100vh);
         height: 100vh;
 
         background-color: #121212;
