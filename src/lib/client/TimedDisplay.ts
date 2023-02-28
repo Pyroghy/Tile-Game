@@ -20,12 +20,12 @@ export class TimedDisplay {
     public createCanvas() {
         const canvas = this.document.getElementById("canvas") as HTMLCanvasElement;
 
-        canvas.width = canvas.clientWidth !== canvas.width ? canvas.clientWidth : canvas.width;
+        canvas.width = canvas.width > canvas.clientWidth ? canvas.clientWidth : canvas.width;
         canvas.height = canvas.width;
 
         const context = canvas.getContext("2d");
 
-        this.tileManager = new TileManager(context, { width: 640, rows: 4 });
+        this.tileManager = new TileManager(context, { width: canvas.width, rows: 4 });
     }
 
     public updateScore(score: number): void {
