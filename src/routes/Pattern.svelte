@@ -70,8 +70,8 @@
     button {
         cursor: pointer;
 
-        width: 12rem;
-        height: 3rem;
+        width: calc(min(40rem, 100vw) * 0.3);
+        height: calc((min(40rem, 100vw) * 0.3) / 4);
 
         text-align: center;
         font-weight: 500;
