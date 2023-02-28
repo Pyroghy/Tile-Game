@@ -46,7 +46,6 @@
     main {
         display: flex;
         flex-direction: column;
-
         justify-content: space-evenly;
 
         width: min(40rem, 100vw);
@@ -56,9 +55,8 @@
     footer {
         display: flex;
         flex-direction: row;
-
-        justify-content: space-evenly;
-        align-items: center;
+        place-content: space-evenly;
+        place-items: center;
 
         width: min(40rem, 100vw);
         height: calc(((100vh - min(40rem, 100vw)) / 2) * 0.75);
@@ -70,17 +68,15 @@
     button {
         cursor: pointer;
 
-        width: calc(min(40rem, 100vw) * 0.3);
-        height: calc((min(40rem, 100vw) * 0.3) / 4);
+        width: calc((min(40rem, 100vw) / 2) * 0.7);
+        height: calc((((100vh - min(40rem, 100vw)) / 2) * 0.75) / 3);
 
         text-align: center;
-        font-weight: 500;
-        color: white;
         font-size: 1.5rem;
+        color: white;
 
         border: none;
         border-radius: 0.5rem;
         background-color: #5539cc;
-        box-shadow: 1px 2px aqua;
     }
 </style>
