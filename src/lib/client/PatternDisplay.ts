@@ -20,7 +20,7 @@ export class PatternDisplay {
     public createCanvas() {
         const canvas = this.document.getElementById("canvas") as HTMLCanvasElement;
 
-        canvas.width = canvas.width > canvas.clientWidth ? canvas.clientWidth : canvas.width;
+        canvas.width = canvas.clientWidth;
         canvas.height = canvas.width;
 
         const context = canvas.getContext("2d");
