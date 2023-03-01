@@ -7,7 +7,7 @@
     let component: any = PatternGame;
     let data: any;
 
-    function handleLoad() {
+    function onMount() {
         const score = document.getElementById("final-score");
         const accuracy = document.getElementById("final-accuracy");
 
@@ -19,7 +19,7 @@
         component = PatternGame;
     }
 
-    function handleStop(event: any) {
+    function onStop(event: any) {
         component = PatternEnd;
         data = event.detail;
     }
@@ -30,11 +30,7 @@
 </script>
 
 <main>
-    <svelte:component
-        this={component}
-        on:end={handleStop}
-        on:load={handleLoad}
-    />
+    <svelte:component this={component} on:stop={onStop} on:mount={onMount} />
 
     <footer>
         <button on:click={handleRestart}>Restart</button>

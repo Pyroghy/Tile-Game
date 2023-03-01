@@ -3,9 +3,7 @@
 
     const dispatch = createEventDispatcher();
 
-    onMount(() => {
-        dispatch("load");
-    });
+    onMount(() => dispatch("mount"));
 </script>
 
 <section>
