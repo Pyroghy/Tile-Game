@@ -2,11 +2,11 @@
     import { createEventDispatcher } from "svelte";
 
     import TimedCanvas from "./TimedCanvas.svelte";
-    import TimedStart from "./TimedStart.svelte";
     import Scoreboard from "../Scoreboard.svelte";
+    import ModeStart from "../ModeStart.svelte";
 
     const dispatch = createEventDispatcher();
-    let component: any = TimedStart;
+    let component: any = ModeStart;
 
     function handleStart() {
         component = TimedCanvas;
