@@ -23,8 +23,14 @@ export class GameDisplay {
         element.innerText = value.toString();
     }
 
-    public updateScore(points: number) {
-        this.score += points;
-        this.update("score", this.score);
+    public updateScore(points: number, decrease?: boolean) {
+        if (decrease) {
+            if (this.score <= 0) return;
+            this.score -= points;
+            this.update("score", this.score);
+        } else {
+            this.score += points;
+            this.update("score", this.score);
+        }
     }
 }

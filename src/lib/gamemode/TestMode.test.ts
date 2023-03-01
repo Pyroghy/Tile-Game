@@ -36,8 +36,8 @@ export class TestMode extends Gamemode {
 
         this.display.score = 0;
 
-        this.resetBlackHits();
-        this.resetWhiteHits();
+        this.totalBlackHits = 0;
+        this.totalWhiteHits = 0;
 
         this.display.update("score", 0);
         this.display.update("counter", 30);
@@ -45,17 +45,17 @@ export class TestMode extends Gamemode {
     }
 
     public onBlackClick(clickedTile: Tile) {
+        const randomTile = this.display.tileContext.getRandomTile();
         const time = (Date.now() - this.startTime) / 1000;
 
         this.display.tileContext.redraw(clickedTile, { color: "limegreen" });
 
         setTimeout(() => {
-            const randomTile = this.display.tileContext.getRandomTile();
             randomTile.color = "black";
-
             this.display.tileContext.redraw(randomTile);
-            this.display.tileContext.redraw(clickedTile, { color: "white" });
+
             clickedTile.color = "white";
+            this.display.tileContext.redraw(clickedTile);
 
             this.display.updateScore(Math.round(1 / time) + 1);
             this.startTime = Date.now();

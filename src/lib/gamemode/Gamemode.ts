@@ -8,12 +8,4 @@ export class Gamemode {
         const totalHits = this.totalBlackHits + this.totalWhiteHits;
         return this.totalBlackHits / totalHits;
     }
-
-    public resetBlackHits() {
-        this.totalBlackHits = 0;
-    }
-
-    public resetWhiteHits() {
-        this.totalWhiteHits = 0;
-    }
 }

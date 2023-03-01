@@ -1,32 +1,22 @@
 import { GameDisplay } from "../display/GameDisplay";
+import type { Tile } from "../structures/Tile";
+import { Gamemode } from "./Gamemode";
 
-export class TimedMode {
+export class TimedMode extends Gamemode {
     public display = new GameDisplay();
 
-    public startTime: number;
-
-    public blackHits = 0;
-    public whiteHits = 0;
-    public totalBlackHits = 0;
-    public totalWhiteHits = 0;
-
-    public setGameTimer(gameLength: number, onGameEnd: Function) {
+    public setGameTimer(gameDuration: number, onGameEnd: Function) {
+        const startTime = this.startTime;
         const timer = setInterval(() => {
-            gameLength--;
+            const timeLeft = (Date.now() - startTime) / 1000;
 
-            this.display.update("counter", gameLength);
+            this.display.update("counter", Math.round(gameDuration - timeLeft));
 
-            if (gameLength <= 0) {
+            if (timeLeft >= gameDuration) {
                 this.stop(onGameEnd);
                 clearInterval(timer);
             }
         }, 1000);
-    }
-
-    public resetRound() {
-        this.blackHits = 0;
-        this.whiteHits = 0;
-        this.startTime = Date.now();
     }
 
     public start(onGameEnd: Function): void {
@@ -46,8 +36,6 @@ export class TimedMode {
 
         this.display.score = 0;
 
-        this.blackHits = 0;
-        this.whiteHits = 0;
         this.totalBlackHits = 0;
         this.totalWhiteHits = 0;
 
@@ -56,41 +44,45 @@ export class TimedMode {
         this.display.update("accuracy", 0);
     }
 
-    public onClick(clickedTile: any): void {
-        if (clickedTile.color === "black") {
-            this.blackHits++;
-            this.totalBlackHits++;
+    public onBlackClick(clickedTile: Tile) {
+        const randomTile = this.display.tileContext.getRandomTile();
+        const time = (Date.now() - this.startTime) / 1000;
 
-            this.display.tileContext.redraw(clickedTile, { color: "limegreen" });
+        this.display.tileContext.redraw(clickedTile, { color: "limegreen" });
 
-            const accuracy = this.blackHits / (this.blackHits + this.whiteHits);
-            const time = (Date.now() - this.startTime) / 1000;
+        setTimeout(() => {
+            randomTile.color = "black";
+            this.display.tileContext.redraw(randomTile);
 
-            this.display.score += Math.round((this.blackHits * accuracy) * (1 / time + 1));
+            clickedTile.color = "white";
+            this.display.tileContext.redraw(clickedTile);
 
-            setTimeout(() => {
-                this.display.tileContext.redraw(clickedTile, { color: "white" });
-                this.display.update("score", this.display.score);
-                this.display.update("accuracy", (this.totalBlackHits / (this.totalBlackHits + this.totalWhiteHits)) * 100);
+            this.display.updateScore(Math.round(1 / time) + 1);
+            this.startTime = Date.now();
+        }, 60);
+    }
 
-                this.resetRound();
+    public onWhiteClick(clickedTile: Tile) {
+        this.display.tileContext.redraw(clickedTile, { color: "crimson" });
 
-                const randomTile = this.display.tileContext.getRandomTile();
-                randomTile.color = "black";
-                this.display.tileContext.redraw(randomTile);
+        setTimeout(() => {
+            this.display.tileContext.redraw(clickedTile, { color: "white" });
+            this.display.updateScore(2, true);
+        }, 60);
+    }
 
-                clickedTile.color = "white";
-            }, 60);
-        } else if (clickedTile.color === "white") {
-            this.whiteHits++;
-            this.totalWhiteHits++;
-
-            this.display.tileContext.redraw(clickedTile, { color: "crimson" });
-
-            setTimeout(() => {
-                this.display.tileContext.redraw(clickedTile, { color: "white" });
-                this.display.update("accuracy", (this.totalBlackHits / (this.totalBlackHits + this.totalWhiteHits)) * 100);
-            }, 60);
+    public onClick(tile: Tile): void {
+        switch (tile.color) {
+            case "black":
+                this.totalBlackHits++;
+                this.onBlackClick(tile);
+                break;
+            case "white":
+                this.totalWhiteHits++;
+                this.onWhiteClick(tile);
+                break;
         }
+
+        this.display.update("accuracy", Math.round(this.accuracy * 100));
     }
 }
