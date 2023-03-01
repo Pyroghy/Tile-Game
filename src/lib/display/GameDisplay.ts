@@ -23,7 +23,7 @@ export class GameDisplay {
         element.innerText = value.toString();
     }
 
-    public setScore(points: number) {
+    public updateScore(points: number) {
         this.score += points;
         this.update("score", this.score);
     }

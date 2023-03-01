@@ -57,13 +57,7 @@ export class TestMode extends Gamemode {
             this.display.tileContext.redraw(clickedTile, { color: "white" });
             clickedTile.color = "white";
 
-            // adds to score - rename
-            this.display.setScore(
-                Math.round(this.accuracy * (1 / time + 1))
-            );
-
-            this.blackHits = 0;
-            this.whiteHits = 0;
+            this.display.updateScore(Math.round(1 / time) + 1);
             this.startTime = Date.now();
         }, 60);
     }
@@ -79,11 +73,11 @@ export class TestMode extends Gamemode {
     public onClick(tile: Tile): void {
         switch (tile.color) {
             case "black":
-                this.increaseBlackHits();
+                this.totalBlackHits++;
                 this.onBlackClick(tile);
                 break;
             case "white":
-                this.increaseWhiteHits();
+                this.totalWhiteHits++;
                 this.onWhiteClick(tile);
                 break;
         }
