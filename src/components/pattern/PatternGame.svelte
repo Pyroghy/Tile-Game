@@ -20,7 +20,6 @@
     function onCanvas(event: any) {
         pattern.display.setCanvas(event.detail);
         pattern.display.setTileContext();
-
         pattern.start();
     }
 

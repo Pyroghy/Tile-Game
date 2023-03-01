@@ -20,7 +20,6 @@
     function onCanvas(event: any) {
         timed.display.setCanvas(event.detail);
         timed.display.setTileContext();
-
         timed.start(() => {
             const totalHits = timed.totalBlackHits + timed.totalWhiteHits;
 

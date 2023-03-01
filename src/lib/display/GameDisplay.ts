@@ -22,4 +22,9 @@ export class GameDisplay {
         const element = document.getElementById(id);
         element.innerText = value.toString();
     }
+
+    public setScore(points: number) {
+        this.score += points;
+        this.update("score", this.score);
+    }
 }
