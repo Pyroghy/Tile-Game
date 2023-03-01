@@ -67,7 +67,7 @@ export class TimedMode extends Gamemode {
 
         setTimeout(() => {
             this.display.tileContext.redraw(clickedTile, { color: "white" });
-            this.display.updateScore(2, true);
+            this.display.updateScore(this.totalWhiteHits, true);
         }, 60);
     }
 

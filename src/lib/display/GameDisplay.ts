@@ -25,7 +25,7 @@ export class GameDisplay {
 
     public updateScore(points: number, decrease?: boolean) {
         if (decrease) {
-            if (this.score <= 0) return;
+            if ((this.score - points) <= 0) return;
             this.score -= points;
             this.update("score", this.score);
         } else {
