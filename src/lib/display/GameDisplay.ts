@@ -1,3 +1,4 @@
+import type { Tile } from "../structures/Tile";
 import { TileManager } from "../structures/TileManager";
 
 export class GameDisplay {
@@ -16,6 +17,11 @@ export class GameDisplay {
     public setTileContext(): void {
         this.context = this.canvas.getContext("2d");
         this.tileContext = new TileManager(this.context, { width: this.canvas.width, rows: 4 });
+    }
+
+    public updateTile(tile: Tile, color: string) {
+        tile.color = color;
+        this.tileContext.redraw(tile);
     }
 
     public update(id: string, value: number) {

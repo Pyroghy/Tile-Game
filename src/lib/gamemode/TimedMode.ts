@@ -14,13 +14,7 @@ export class TimedMode extends Gamemode {
             this.display.update("counter", Math.round(gameDuration - timeLeft));
 
             if (timeLeft >= gameDuration) {
-                const totalHits = this.totalBlackHits + this.totalWhiteHits;
-
-                this.emit("stop", {
-                    score: this.display.score,
-                    accuracy: (this.totalBlackHits / totalHits) * 100,
-                });
-
+                this.emit("stop", { score: this.display.score, accuracy: Math.round(this.accuracy * 100) });
                 this.stop();
             }
         }, 1000);
@@ -37,11 +31,10 @@ export class TimedMode extends Gamemode {
     public stop(): void {
         clearInterval(this.gameTimer);
 
-        this.display.score = 0;
-
         this.totalBlackHits = 0;
         this.totalWhiteHits = 0;
 
+        this.display.score = 0;
         this.display.update("score", 0);
         this.display.update("counter", 30);
         this.display.update("accuracy", 0);
@@ -54,12 +47,8 @@ export class TimedMode extends Gamemode {
         this.display.tileContext.redraw(clickedTile, { color: "limegreen" });
 
         setTimeout(() => {
-            randomTile.color = "black";
-            this.display.tileContext.redraw(randomTile);
-
-            clickedTile.color = "white";
-            this.display.tileContext.redraw(clickedTile);
-
+            this.display.updateTile(randomTile, "black");
+            this.display.updateTile(clickedTile, "white");
             this.display.increaseScore(Math.round(1 / time) + 1);
             this.startTime = Date.now();
         }, 60);
