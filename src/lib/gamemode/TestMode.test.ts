@@ -4,10 +4,9 @@ import { Gamemode } from "./Gamemode";
 
 export class TestMode extends Gamemode {
     public display = new GameDisplay();
-
     public gameTimer: any;
 
-    public setGameTimer(gameDuration: number, onGameEnd: Function) {
+    public setGameTimer(gameDuration: number) {
         const startTime = this.startTime;
         this.gameTimer = setInterval(() => {
             const timeLeft = (Date.now() - startTime) / 1000;
@@ -15,24 +14,27 @@ export class TestMode extends Gamemode {
             this.display.update("counter", Math.round(gameDuration - timeLeft));
 
             if (timeLeft >= gameDuration) {
-                this.stop(onGameEnd);
+                const totalHits = this.totalBlackHits + this.totalWhiteHits;
+
+                this.emit("stop", {
+                    score: this.display.score,
+                    accuracy: (this.totalBlackHits / totalHits) * 100,
+                });
+
+                this.stop();
             }
         }, 1000);
     }
 
-    public start(onGameEnd: any): void {
+    public start(): void {
         this.display.tileContext.createMatrix(3);
         this.display.tileContext.redrawTiles();
 
         this.startTime = Date.now();
-
-        this.setGameTimer(30, onGameEnd);
+        this.setGameTimer(30);
     }
 
-    public restart(): void { }
-
-    public stop(gameEnd: Function): void {
-        gameEnd();
+    public stop(): void {
         clearInterval(this.gameTimer);
 
         this.display.score = 0;
