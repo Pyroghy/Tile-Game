@@ -5,34 +5,35 @@ import { Gamemode } from "./Gamemode";
 export class TestMode extends Gamemode {
     public display = new GameDisplay();
 
+    public gameTimer: any;
+
     public setGameTimer(gameDuration: number, onGameEnd: Function) {
         const startTime = this.startTime;
-        const timer = setInterval(() => {
+        this.gameTimer = setInterval(() => {
             const timeLeft = (Date.now() - startTime) / 1000;
 
-            this.display.update("counter", Math.round(timeLeft));
+            this.display.update("counter", Math.round(gameDuration - timeLeft));
 
             if (timeLeft >= gameDuration) {
                 this.stop(onGameEnd);
-                clearInterval(timer);
             }
         }, 1000);
     }
 
-    public start(onGameEnd: Function): void {
+    public start(onGameEnd: any): void {
         this.display.tileContext.createMatrix(3);
         this.display.tileContext.redrawTiles();
 
         this.startTime = Date.now();
+
         this.setGameTimer(30, onGameEnd);
     }
 
-    public restart(): void {
-        throw new Error("Method not implemented.");
-    }
+    public restart(): void { }
 
     public stop(gameEnd: Function): void {
         gameEnd();
+        clearInterval(this.gameTimer);
 
         this.display.score = 0;
 
@@ -57,7 +58,7 @@ export class TestMode extends Gamemode {
             clickedTile.color = "white";
             this.display.tileContext.redraw(clickedTile);
 
-            this.display.updateScore(Math.round(1 / time) + 1);
+            this.display.increaseScore(Math.round(1 / time) + 1);
             this.startTime = Date.now();
         }, 60);
     }

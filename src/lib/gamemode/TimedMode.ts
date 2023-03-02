@@ -4,35 +4,38 @@ import { Gamemode } from "./Gamemode";
 
 export class TimedMode extends Gamemode {
     public display = new GameDisplay();
+    public gameTimer: any;
 
-    public setGameTimer(gameDuration: number, onGameEnd: Function) {
+    public setGameTimer(gameDuration: number) {
         const startTime = this.startTime;
-        const timer = setInterval(() => {
+        this.gameTimer = setInterval(() => {
             const timeLeft = (Date.now() - startTime) / 1000;
 
             this.display.update("counter", Math.round(gameDuration - timeLeft));
 
             if (timeLeft >= gameDuration) {
-                this.stop(onGameEnd);
-                clearInterval(timer);
+                const totalHits = this.totalBlackHits + this.totalWhiteHits;
+
+                this.emit("stop", {
+                    score: this.display.score,
+                    accuracy: (this.totalBlackHits / totalHits) * 100,
+                });
+
+                this.stop();
             }
         }, 1000);
     }
 
-    public start(onGameEnd: Function): void {
+    public start(): void {
         this.display.tileContext.createMatrix(3);
         this.display.tileContext.redrawTiles();
 
         this.startTime = Date.now();
-        this.setGameTimer(30, onGameEnd);
+        this.setGameTimer(30);
     }
 
-    public restart(): void {
-        throw new Error("Method not implemented.");
-    }
-
-    public stop(gameEnd: Function): void {
-        gameEnd();
+    public stop(): void {
+        clearInterval(this.gameTimer);
 
         this.display.score = 0;
 
@@ -57,7 +60,7 @@ export class TimedMode extends Gamemode {
             clickedTile.color = "white";
             this.display.tileContext.redraw(clickedTile);
 
-            this.display.updateScore(Math.round(1 / time) + 1);
+            this.display.increaseScore(Math.round(1 / time) + 1);
             this.startTime = Date.now();
         }, 60);
     }
@@ -67,7 +70,7 @@ export class TimedMode extends Gamemode {
 
         setTimeout(() => {
             this.display.tileContext.redraw(clickedTile, { color: "white" });
-            this.display.updateScore(this.totalWhiteHits, true);
+            this.display.decreaseScore(this.totalWhiteHits);
         }, 60);
     }
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher, onDestroy, onMount } from "svelte";
 
     import Canvas from "../base/Canvas.svelte";
     import Scoreboard from "../base/Scoreboard.svelte";
@@ -8,9 +8,22 @@
     import { TimedMode } from "../../lib/gamemode/TimedMode";
 
     const dispatch = createEventDispatcher();
-    const timed = new TimedMode();
+    const timed = new TimedMode(dispatch);
 
     let component: any = ModeStart;
+
+    onMount(() => {
+        const restartButton = document.getElementById("restart");
+
+        restartButton.addEventListener("click", () => {
+            component = ModeStart;
+            timed.stop();
+        });
+    });
+
+    onDestroy(() => {
+        clearInterval(timed.gameTimer);
+    });
 
     function onStart() {
         component = Canvas;
@@ -20,14 +33,7 @@
     function onCanvas(event: any) {
         timed.display.setCanvas(event.detail);
         timed.display.setTileContext();
-        timed.start(() => {
-            const totalHits = timed.totalBlackHits + timed.totalWhiteHits;
-
-            dispatch("stop", {
-                score: timed.display.score,
-                accuracy: (timed.totalBlackHits / totalHits) * 100,
-            });
-        });
+        timed.start();
     }
 
     // fires when canvas is clicked on

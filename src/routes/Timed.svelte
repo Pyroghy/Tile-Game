@@ -33,7 +33,7 @@
     <svelte:component this={component} on:stop={onStop} on:mount={onMount} />
 
     <footer>
-        <button on:click={handleRestart}>Restart</button>
+        <button on:click={handleRestart} id="restart">Restart</button>
         <button on:click={handleLeave}>Leave</button>
     </footer>
 </main>
