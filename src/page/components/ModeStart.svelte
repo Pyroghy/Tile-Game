@@ -3,30 +3,55 @@
 
     const dispatch = createEventDispatcher();
     let countdownElement: any;
-    let countdown: any;
     let seconds = 3;
 
-    export function handleRestart() {
-        clearInterval(countdown);
-
-        seconds = 3;
-        countdown = setInterval(countdownInterval, 1000);
-    }
-
-    function countdownInterval() {
+    const countdownTimer = new Interval(() => {
         seconds--;
 
         countdownElement.innerText = seconds.toString();
 
         if (seconds <= 0) {
             dispatch("start");
-            clearInterval(countdown);
+            countdownTimer.stop();
+            seconds = 3;
         }
+    }, 1000);
+
+    function Interval(method: Function, time: number) {
+        let timer = setInterval(method, time);
+
+        this.stop = () => {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+
+            return this;
+        };
+
+        this.start = () => {
+            if (!timer) {
+                this.stop();
+                timer = setInterval(method, time);
+            }
+
+            return this;
+        };
+
+        this.restart = () => {
+            seconds = 3;
+            countdownElement.innerText = seconds.toString();
+
+            return this.stop().start();
+        };
+    }
+
+    export function handleRestart() {
+        countdownTimer.restart();
     }
 
     onMount(() => {
-        seconds = 3;
-        countdown = setInterval(countdownInterval, 1000);
+        countdownTimer.restart();
     });
 </script>
 

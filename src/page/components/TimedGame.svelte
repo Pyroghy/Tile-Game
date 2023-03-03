@@ -12,12 +12,13 @@
     let game: any;
 
     export function restartGame() {
-        component = ModeStart;
+        if (component === ModeStart) {
+            game.handleRestart();
+        } else {
+            timed.stop();
 
-        game.handleRestart();
-
-        clearInterval(timed.gameTimer);
-        timed.emit("restart");
+            component = ModeStart;
+        }
     }
 
     function onStart() {

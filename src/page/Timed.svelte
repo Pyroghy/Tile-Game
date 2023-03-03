@@ -14,9 +14,9 @@
     function onRestart() {
         if (component === TimedGame) {
             game.restartGame();
+        } else {
+            component = TimedGame;
         }
-
-        component = TimedGame;
     }
 
     function onStop(e: any) {
@@ -30,7 +30,6 @@
     <svelte:component
         this={component}
         bind:this={game}
-        on:restart={onRestart}
         on:stop={onStop}
         on:mount={onMount}
     />
