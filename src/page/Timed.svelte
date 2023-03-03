@@ -1,36 +1,43 @@
 <script lang="ts">
-    import TimedGame from "../components/timed/TimedGame.svelte";
+    import TimedGame from "./components/TimedGame.svelte";
     import ModeStop from "./components/ModeStop.svelte";
 
     let component: any = TimedGame;
     let game: any;
 
-    function onStart() {
+    let stats: any;
+
+    function onMount() {
+        game.setFinalStats(stats);
+    }
+
+    function onRestart() {
+        if (component === TimedGame) {
+            game.restartGame();
+        }
+
         component = TimedGame;
     }
 
-    function onStop() {
+    function onStop(e: any) {
+        stats = e.detail;
+
         component = ModeStop;
     }
-
-    function handleRestart() {
-        game.restartGame();
-    }
-
-    function handleLeave() {}
 </script>
 
 <main>
     <svelte:component
         this={component}
         bind:this={game}
-        on:start={onStart}
+        on:restart={onRestart}
         on:stop={onStop}
+        on:mount={onMount}
     />
 
     <footer>
-        <button on:click={handleRestart}>Restart</button>
-        <button on:click={handleLeave}>Leave</button>
+        <button on:click={onRestart}>Restart</button>
+        <button on:click={null}>Leave</button>
     </footer>
 </main>
 

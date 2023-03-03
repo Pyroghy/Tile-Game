@@ -11,16 +11,7 @@
     const timed = new TimedMode(dispatch);
 
     let component: any = ModeStart;
-
-    onMount(() => {
-        const restartButton = document.getElementById("restart");
-
-        restartButton.addEventListener("click", () => {
-            component = ModeStart;
-            timed.stop();
-        });
-    });
-
+    
     onDestroy(() => {
         clearInterval(timed.gameTimer);
     });

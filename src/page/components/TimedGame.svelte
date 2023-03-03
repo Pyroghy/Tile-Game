@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher, onDestroy, onMount } from "svelte";
+    import { createEventDispatcher, onDestroy } from "svelte";
     import { TimedMode } from "../../lib/gamemode/TimedMode";
 
     import Canvas from "./Canvas.svelte";
@@ -9,34 +9,30 @@
     const dispatch = createEventDispatcher();
     const timed = new TimedMode(dispatch);
     let component: any = ModeStart;
-    let seconds = 3;
+    let game: any;
 
-    export const restartGame = () => {
-        timed.stop();
-
+    export function restartGame() {
         component = ModeStart;
-    };
 
-    onMount(() => {
-        const countdownElement = document.getElementById("countdown");
-        const countdown = setInterval(() => {
-            seconds--;
+        game.handleRestart();
 
-            countdownElement.innerText = seconds.toString();
+        clearInterval(timed.gameTimer);
+        timed.emit("restart");
+    }
 
-            if (seconds <= 0) {
-                timed.emit("start");
-                component = Canvas;
-                clearInterval(countdown);
-            }
-        }, 1000);
-    });
+    function onStart() {
+        component = Canvas;
+    }
 
     onDestroy(() => {
         clearInterval(timed.gameTimer);
-        timed.emit("stop");
     });
 </script>
 
 <svelte:component this={Scoreboard} type="timed" />
-<svelte:component this={component} gamemode={timed} />
+<svelte:component
+    this={component}
+    gamemode={timed}
+    bind:this={game}
+    on:start={onStart}
+/>

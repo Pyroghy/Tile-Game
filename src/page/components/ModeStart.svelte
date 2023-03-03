@@ -1,28 +1,39 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import type { Gamemode } from "../../lib/gamemode/Gamemode";
+    import { createEventDispatcher, onMount } from "svelte";
 
-    export let gamemode: Gamemode;
+    const dispatch = createEventDispatcher();
+    let countdownElement: any;
+    let countdown: any;
     let seconds = 3;
 
+    export function handleRestart() {
+        clearInterval(countdown);
+
+        seconds = 3;
+        countdown = setInterval(countdownInterval, 1000);
+    }
+
+    function countdownInterval() {
+        seconds--;
+
+        countdownElement.innerText = seconds.toString();
+
+        if (seconds <= 0) {
+            dispatch("start");
+            clearInterval(countdown);
+        }
+    }
+
     onMount(() => {
-        const countdownElement = document.getElementById("countdown");
-        const countdown = setInterval(() => {
-            seconds--;
-
-            countdownElement.innerText = seconds.toString();
-
-            if (seconds <= 0) {
-                gamemode.emit("start");
-                // component = Canvas;
-                clearInterval(countdown);
-            }
-        }, 1000);
+        seconds = 3;
+        countdown = setInterval(countdownInterval, 1000);
     });
 </script>
 
 <section>
-    <h1>Game Starts In <strong id="countdown">3</strong> Seconds!</h1>
+    <h1>
+        Game Starts In <strong bind:this={countdownElement}>3</strong> Seconds!
+    </h1>
 </section>
 
 <style>

@@ -2,6 +2,13 @@
     import { createEventDispatcher, onMount } from "svelte";
 
     const dispatch = createEventDispatcher();
+    let finalScore: any;
+    let finalAccuracy: any;
+
+    export function setFinalStats(stats: any) {
+        finalScore.innerText = stats.score;
+        finalAccuracy.innerText = stats.accuracy;
+    }
 
     onMount(() => dispatch("mount"));
 </script>
@@ -12,12 +19,12 @@
     <div>
         <article>
             <h3>SCORE</h3>
-            <h4 id="final-score">0</h4>
+            <h4 bind:this={finalScore}>0</h4>
         </article>
 
         <article>
             <h3>ACCURACY</h3>
-            <h4 id="final-accuracy">0</h4>
+            <h4 bind:this={finalAccuracy}>0</h4>
         </article>
     </div>
 </section>

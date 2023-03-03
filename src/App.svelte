@@ -9,6 +9,8 @@
     import Pattern from "./routes/Pattern.svelte";
     import Multiplayer from "./routes/Multiplayer.svelte";
 
+    import Timed2 from "./page/Timed.svelte";
+
     // get correct type dec
     let component: any;
 
@@ -19,6 +21,8 @@
     page("/timed", () => (component = Timed));
     page("/pattern", () => (component = Pattern));
     page("/multiplayer", () => (component = Multiplayer));
+
+    page("/2", () => (component = Timed2));
 
     page.start();
 </script>
