@@ -13,7 +13,7 @@
 
     function onRestart() {
         if (component === TimedGame) {
-            game.restartGame();
+            game.handleRestart();
         } else {
             component = TimedGame;
         }

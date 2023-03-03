@@ -13,36 +13,32 @@
         if (seconds <= 0) {
             dispatch("start");
             countdownTimer.stop();
-            seconds = 3;
         }
     }, 1000);
 
     function Interval(method: Function, time: number) {
         let timer = setInterval(method, time);
 
-        this.stop = () => {
-            if (timer) {
-                clearInterval(timer);
-                timer = null;
-            }
-
-            return this;
-        };
-
         this.start = () => {
             if (!timer) {
                 this.stop();
                 timer = setInterval(method, time);
             }
+        };
 
-            return this;
+        this.stop = () => {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
         };
 
         this.restart = () => {
             seconds = 3;
             countdownElement.innerText = seconds.toString();
 
-            return this.stop().start();
+            this.stop();
+            this.start();
         };
     }
 

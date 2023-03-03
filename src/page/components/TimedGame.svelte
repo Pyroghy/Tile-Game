@@ -11,7 +11,15 @@
     let component: any = ModeStart;
     let game: any;
 
-    export function restartGame() {
+    onDestroy(() => {
+        clearInterval(timed.gameTimer);
+    });
+
+    function onStart() {
+        component = Canvas;
+    }
+
+    export function handleRestart() {
         if (component === ModeStart) {
             game.handleRestart();
         } else {
@@ -20,14 +28,6 @@
             component = ModeStart;
         }
     }
-
-    function onStart() {
-        component = Canvas;
-    }
-
-    onDestroy(() => {
-        clearInterval(timed.gameTimer);
-    });
 </script>
 
 <svelte:component this={Scoreboard} type="timed" />
