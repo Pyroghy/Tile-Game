@@ -2,9 +2,6 @@ import type { Tile } from "../structures/Tile";
 import { Gamemode } from "./Gamemode";
 
 export class PatternMode extends Gamemode {
-    public gameTimer: ReturnType<typeof setInterval>;;
-    public startTime: number;
-
     public blackHits = 0;
     public whiteHits = 0;
 

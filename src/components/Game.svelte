@@ -1,23 +1,22 @@
 <script lang="ts">
-    import { createEventDispatcher, onDestroy } from "svelte";
-    import { TimedMode } from "../lib/gamemode/TimedMode";
+    import { createEventDispatcher, onMount } from "svelte";
+    import type { Gamemode } from "../lib/gamemode/Gamemode";
 
-    import Canvas from "./core/Canvas.svelte";
-    import Scoreboard from "./core/Scoreboard.svelte";
-    import ModeStart from "./core/ModeStart.svelte";
+    import Canvas from "./Canvas.svelte";
+    import Scoreboard from "./Scoreboard.svelte";
+    import ModeStart from "./ModeStart.svelte";
 
     const dispatch = createEventDispatcher();
-    const timed = new TimedMode(dispatch);
+    export let gamemode: Gamemode;
     let component: any = ModeStart;
     let game: any;
 
-    onDestroy(() => {
-        clearInterval(timed.gameTimer);
+    onMount(() => {
+        gamemode.setEmitter(dispatch);
     });
 
     function onStart() {
-        timed.stop();
-
+        gamemode.stop();
         component = Canvas;
     }
 
@@ -25,8 +24,7 @@
         if (component === ModeStart) {
             game.handleRestart();
         } else {
-            timed.stop();
-
+            gamemode.stop();
             component = ModeStart;
         }
     }
@@ -35,7 +33,7 @@
 <svelte:component this={Scoreboard} type="timed" />
 <svelte:component
     this={component}
-    gamemode={timed}
+    game={gamemode}
     bind:this={game}
     on:start={onStart}
 />

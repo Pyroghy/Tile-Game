@@ -2,9 +2,6 @@ import type { Tile } from "../structures/Tile";
 import { Gamemode } from "./Gamemode";
 
 export class TimedMode extends Gamemode {
-    public gameTimer: ReturnType<typeof setInterval>;;
-    public startTime: number;
-
     public start(): void {
         const startTime = Date.now();
         const gameDuration = 30;

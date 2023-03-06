@@ -1,9 +1,17 @@
 <script lang="ts">
-    import { createEventDispatcher, onMount } from "svelte";
+    import { createEventDispatcher, onDestroy, onMount } from "svelte";
 
     const dispatch = createEventDispatcher();
     let countdownElement: any;
     let seconds = 3;
+
+    onMount(() => {
+        countdownTimer.restart();
+    });
+
+    onDestroy(() => {
+        countdownTimer.stop();
+    });
 
     const countdownTimer = new Interval(() => {
         seconds--;
@@ -15,6 +23,10 @@
             countdownTimer.stop();
         }
     }, 1000);
+
+    export function handleRestart() {
+        countdownTimer.restart();
+    }
 
     function Interval(method: Function, time: number) {
         let timer = setInterval(method, time);
@@ -41,14 +53,6 @@
             this.start();
         };
     }
-
-    export function handleRestart() {
-        countdownTimer.restart();
-    }
-
-    onMount(() => {
-        countdownTimer.restart();
-    });
 </script>
 
 <section>

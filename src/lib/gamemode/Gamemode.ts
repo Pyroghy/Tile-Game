@@ -4,17 +4,25 @@ export abstract class Gamemode {
     public display: GameDisplay;
     public emit: any;
 
+    public gameTimer: ReturnType<typeof setInterval>;
+    public startTime: number;
+
+    public blackHits?: number;
+    public whiteHits?: number;
     public totalBlackHits = 0;
     public totalWhiteHits = 0;
 
-    public constructor(dispatch: any) {
+    public constructor() {
         this.display = new GameDisplay();
-        this.emit = dispatch;
     }
 
     public get accuracy(): number {
         const totalHits = this.totalBlackHits + this.totalWhiteHits;
         return this.totalBlackHits / totalHits;
+    }
+
+    public setEmitter(dispatch: any) {
+        this.emit = dispatch
     }
 
     public abstract start(...args: any[]): void;

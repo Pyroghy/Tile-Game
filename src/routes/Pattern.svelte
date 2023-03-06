@@ -1,12 +1,14 @@
 <script lang="ts">
     import page from "page";
 
-    import PatternGame from "../components/PatternGame.svelte";
-    import ModeStop from "../components/core/ModeStop.svelte";
+    import { PatternMode } from "../lib/gamemode/PatternMode";
 
+    import PatternGame from "../components/Game.svelte";
+    import ModeStop from "../components/ModeStop.svelte";
+
+    const pattern = new PatternMode();
     let component: any = PatternGame;
     let game: any;
-
     let stats: any;
 
     function onMount() {
@@ -34,6 +36,7 @@
 <main>
     <svelte:component
         this={component}
+        gamemode={pattern}
         bind:this={game}
         on:stop={onStop}
         on:mount={onMount}

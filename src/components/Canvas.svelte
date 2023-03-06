@@ -1,25 +1,29 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import type { Gamemode } from "../../lib/gamemode/Gamemode";
+    import { onDestroy, onMount } from "svelte";
+    import type { Gamemode } from "../lib/gamemode/Gamemode";
 
-    export let gamemode: Gamemode;
+    export let game: Gamemode;
     let canvas: HTMLCanvasElement;
 
     onMount(() => {
-        gamemode.display.setCanvas(canvas);
-        gamemode.display.setTileContext();
-        gamemode.start();
+        game.display.setCanvas(canvas);
+        game.display.setTileContext();
+        game.start();
+    });
+
+    onDestroy(() => {
+        clearInterval(game.gameTimer);
     });
 
     function onMouseDown({ target, clientX, clientY }: any): void {
         const bounds = target.getBoundingClientRect();
-        const clickedTile = gamemode.display.tileContext.getTile(
+        const clickedTile = game.display.tileContext.getTile(
             clientX - bounds.left,
             clientY - bounds.top
         );
 
         if (clickedTile) {
-            gamemode.onClick(clickedTile);
+            game.onClick(clickedTile);
         }
     }
 </script>

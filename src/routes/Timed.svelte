@@ -1,12 +1,14 @@
 <script lang="ts">
     import page from "page";
 
-    import TimedGame from "../components/TimedGame.svelte";
-    import ModeStop from "../components/core/ModeStop.svelte";
+    import { TimedMode } from "../lib/gamemode/TimedMode";
 
+    import TimedGame from "../components/Game.svelte";
+    import ModeStop from "../components/ModeStop.svelte";
+
+    const timed = new TimedMode();
     let component: any = TimedGame;
     let game: any;
-
     let stats: any;
 
     function onMount() {
@@ -34,6 +36,7 @@
 <main>
     <svelte:component
         this={component}
+        gamemode={timed}
         bind:this={game}
         on:stop={onStop}
         on:mount={onMount}
