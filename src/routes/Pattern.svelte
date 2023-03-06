@@ -1,27 +1,29 @@
 <script lang="ts">
     import page from "page";
 
-    import PatternGame from "../components/pattern/PatternGame.svelte";
-    import PatternEnd from "../components/pattern/PatternEnd.svelte";
+    import PatternGame from "../components/PatternGame.svelte";
+    import ModeStop from "../components/core/ModeStop.svelte";
 
     let component: any = PatternGame;
-    let data: any;
+    let game: any;
+
+    let stats: any;
 
     function onMount() {
-        const score = document.getElementById("final-score");
-        const accuracy = document.getElementById("final-accuracy");
+        game.setFinalStats(stats);
+    }
 
-        score.innerText = data.score.toString();
-        accuracy.innerText = data.accuracy.toFixed(2) + "%";
+    function onStop(e: any) {
+        stats = e.detail;
+        component = ModeStop;
     }
 
     function handleRestart() {
-        component = PatternGame;
-    }
-
-    function onStop(event: any) {
-        component = PatternEnd;
-        data = event.detail;
+        if (component === PatternGame) {
+            game.handleRestart();
+        } else {
+            component = PatternGame;
+        }
     }
 
     function handleLeave() {
@@ -30,7 +32,12 @@
 </script>
 
 <main>
-    <svelte:component this={component} on:stop={onStop} on:mount={onMount} />
+    <svelte:component
+        this={component}
+        bind:this={game}
+        on:stop={onStop}
+        on:mount={onMount}
+    />
 
     <footer>
         <button on:click={handleRestart}>Restart</button>

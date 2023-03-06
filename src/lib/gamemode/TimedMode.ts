@@ -1,13 +1,18 @@
-import { GameDisplay } from "../display/GameDisplay";
 import type { Tile } from "../structures/Tile";
 import { Gamemode } from "./Gamemode";
 
 export class TimedMode extends Gamemode {
-    public display = new GameDisplay();
-    public gameTimer: any;
+    public gameTimer: ReturnType<typeof setInterval>;;
+    public startTime: number;
 
-    public setGameTimer(gameDuration: number) {
-        const startTime = this.startTime;
+    public start(): void {
+        const startTime = Date.now();
+        const gameDuration = 30;
+
+        this.display.tileContext.createMatrix(3);
+        this.display.tileContext.redrawTiles();
+
+        this.startTime = startTime;
         this.gameTimer = setInterval(() => {
             const timeLeft = (Date.now() - startTime) / 1000;
 
@@ -18,14 +23,6 @@ export class TimedMode extends Gamemode {
                 this.stop();
             }
         }, 1000);
-    }
-
-    public start(): void {
-        this.display.tileContext.createMatrix(3);
-        this.display.tileContext.redrawTiles();
-
-        this.startTime = Date.now();
-        this.setGameTimer(30);
     }
 
     public stop(): void {
@@ -40,7 +37,12 @@ export class TimedMode extends Gamemode {
         this.display.update("accuracy", 0);
     }
 
-    public onBlackClick(clickedTile: Tile) {
+    public restart(): void {
+        this.stop();
+        this.start();
+    }
+
+    public onBlackClick(clickedTile: Tile): void {
         const randomTile = this.display.tileContext.getRandomTile();
         const time = (Date.now() - this.startTime) / 1000;
 
@@ -54,7 +56,7 @@ export class TimedMode extends Gamemode {
         }, 60);
     }
 
-    public onWhiteClick(clickedTile: Tile) {
+    public onWhiteClick(clickedTile: Tile): void {
         this.display.tileContext.redraw(clickedTile, { color: "crimson" });
 
         setTimeout(() => {

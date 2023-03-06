@@ -1,27 +1,29 @@
 <script lang="ts">
     import page from "page";
 
-    import TimedGame from "../components/timed/TimedGame.svelte";
-    import TimedEnd from "../components/timed/TimedEnd.svelte";
+    import TimedGame from "../components/TimedGame.svelte";
+    import ModeStop from "../components/core/ModeStop.svelte";
 
     let component: any = TimedGame;
-    let data: any;
+    let game: any;
+
+    let stats: any;
 
     function onMount() {
-        const score = document.getElementById("final-score");
-        const accuracy = document.getElementById("final-accuracy");
+        game.setFinalStats(stats);
+    }
 
-        score.innerText = data.score.toString();
-        accuracy.innerText = data.accuracy.toFixed(2) + "%";
+    function onStop(e: any) {
+        stats = e.detail;
+        component = ModeStop;
     }
 
     function handleRestart() {
-        component = TimedGame;
-    }
-
-    function onStop(event: any) {
-        component = TimedEnd;
-        data = event.detail;
+        if (component === TimedGame) {
+            game.handleRestart();
+        } else {
+            component = TimedGame;
+        }
     }
 
     function handleLeave() {
@@ -30,10 +32,15 @@
 </script>
 
 <main>
-    <svelte:component this={component} on:stop={onStop} on:mount={onMount} />
+    <svelte:component
+        this={component}
+        bind:this={game}
+        on:stop={onStop}
+        on:mount={onMount}
+    />
 
     <footer>
-        <button on:click={handleRestart} id="restart">Restart</button>
+        <button on:click={handleRestart}>Restart</button>
         <button on:click={handleLeave}>Leave</button>
     </footer>
 </main>

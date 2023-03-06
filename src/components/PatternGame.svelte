@@ -1,21 +1,23 @@
 <script lang="ts">
     import { createEventDispatcher, onDestroy } from "svelte";
-    import { TimedMode } from "../../lib/gamemode/TimedMode";
+    import { PatternMode } from "../lib/gamemode/PatternMode";
 
-    import Canvas from "./Canvas.svelte";
-    import Scoreboard from "./Scoreboard.svelte";
-    import ModeStart from "./ModeStart.svelte";
+    import Canvas from "./core/Canvas.svelte";
+    import Scoreboard from "./core/Scoreboard.svelte";
+    import ModeStart from "./core/ModeStart.svelte";
 
     const dispatch = createEventDispatcher();
-    const timed = new TimedMode(dispatch);
+    const pattern = new PatternMode(dispatch);
     let component: any = ModeStart;
     let game: any;
 
     onDestroy(() => {
-        clearInterval(timed.gameTimer);
+        clearInterval(pattern.gameTimer);
     });
 
     function onStart() {
+        pattern.stop();
+
         component = Canvas;
     }
 
@@ -23,17 +25,17 @@
         if (component === ModeStart) {
             game.handleRestart();
         } else {
-            timed.stop();
+            pattern.stop();
 
             component = ModeStart;
         }
     }
 </script>
 
-<svelte:component this={Scoreboard} type="timed" />
+<svelte:component this={Scoreboard} type="pattern" />
 <svelte:component
     this={component}
-    gamemode={timed}
+    gamemode={pattern}
     bind:this={game}
     on:start={onStart}
 />
