@@ -9,8 +9,7 @@ export class PatternMode extends Gamemode {
         const startTime = Date.now();
         const gameDuration = 30;
 
-        this.display.tileContext.createMatrix(4);
-        this.display.tileContext.redrawTiles();
+        this.display.tiles.updateAll({ clickable: 4 });
 
         this.startTime = startTime;
         this.gameTimer = setInterval(() => {
@@ -46,17 +45,16 @@ export class PatternMode extends Gamemode {
         const accuracy = this.blackHits / (this.blackHits + this.whiteHits);
         const time = (Date.now() - this.startTime) / 1000;
 
-        this.display.tileContext.redraw(clickedTile, { color: "limegreen" });
+        this.display.tiles.update(clickedTile, { color: "limegreen" });
         clickedTile.color = "green";
 
         setTimeout(() => {
-            this.display.tileContext.redraw(clickedTile, { color: "white" });
+            this.display.tiles.update(clickedTile, { color: "white" });
 
             if (this.blackHits === 4) {
                 setTimeout(() => {
                     this.display.increaseScore(Math.round((this.blackHits * accuracy) * (1 / time + 1)));
-                    this.display.tileContext.createMatrix(4);
-                    this.display.tileContext.redrawTiles();
+                    this.display.tiles.updateAll({ clickable: 4 });
 
                     this.blackHits = 0;
                     this.whiteHits = 0;
@@ -67,10 +65,10 @@ export class PatternMode extends Gamemode {
     }
 
     public onWhiteClick(clickedTile: Tile): void {
-        this.display.tileContext.redraw(clickedTile, { color: "crimson" });
+        this.display.tiles.update(clickedTile, { color: "crimson" });
 
         setTimeout(() => {
-            this.display.tileContext.redraw(clickedTile, { color: "white" });
+            this.display.tiles.update(clickedTile, { color: "white" });
         }, 60);
     }
 

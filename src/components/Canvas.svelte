@@ -7,7 +7,6 @@
 
     onMount(() => {
         game.display.setCanvas(canvas);
-        game.display.setTileContext();
         game.start();
     });
 
@@ -17,7 +16,7 @@
 
     function onMouseDown({ target, clientX, clientY }: any): void {
         const bounds = target.getBoundingClientRect();
-        const clickedTile = game.display.tileContext.getTile(
+        const clickedTile = game.display.tiles.tileMatrix.getTile(
             clientX - bounds.left,
             clientY - bounds.top
         );

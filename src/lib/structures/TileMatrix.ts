@@ -1,14 +1,13 @@
 import { Tile } from "./Tile";
 
 export class TileMatrix {
+    public tiles: Tile[];
     public width: number;
     public matrixWidth: number;
 
-    public tileWidth: number;
-    public matrixGap: number;
-    public matrixPadding: number;
-
-    public tiles: Tile[];
+    private tileWidth: number;
+    private matrixGap: number;
+    private matrixPadding: number;
 
     public constructor(width: number, matrixWidth: number) {
         this.width = width;
@@ -21,7 +20,7 @@ export class TileMatrix {
         this.tiles = this.createBlankMatrix();
     }
 
-    public getMatrixCoordinate(index: number): number {
+    private getMatrixCoordinate(index: number): number {
         return (this.tileWidth + this.matrixGap) * index + this.matrixGap + this.matrixPadding;
     }
 

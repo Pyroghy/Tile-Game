@@ -2,39 +2,31 @@ import type { Tile } from "../structures/Tile";
 import { TileManager } from "../structures/TileManager";
 
 export class GameDisplay {
-    private canvas: HTMLCanvasElement;
-    private context: CanvasRenderingContext2D;
-    public tileContext: TileManager;
-
+    public tiles: TileManager;
     public score = 0;
 
     public setCanvas(canvas: HTMLCanvasElement): void {
         canvas.width = canvas.clientWidth;
         canvas.height = canvas.width;
-        this.canvas = canvas;
+        this.tiles = new TileManager(canvas);
     }
 
-    public setTileContext(): void {
-        this.context = this.canvas.getContext("2d");
-        this.tileContext = new TileManager(this.context, { width: this.canvas.width, rows: 4 });
-    }
-
-    public updateTile(tile: Tile, color: string) {
+    public updateTile(tile: Tile, color: string): void {
         tile.color = color;
-        this.tileContext.redraw(tile);
+        this.tiles.update(tile);
     }
 
-    public update(id: string, value: number) {
+    public update(id: string, value: number): void {
         const element = document.getElementById(id);
         element.innerText = value.toString();
     }
 
-    public increaseScore(points: number) {
+    public increaseScore(points: number): void {
         this.score += points;
         this.update("score", this.score);
     }
 
-    public decreaseScore(points: number) {
+    public decreaseScore(points: number): void {
         const score = this.score - points;
         this.score = score <= 0 ? 0 : score;
         this.update("score", this.score);

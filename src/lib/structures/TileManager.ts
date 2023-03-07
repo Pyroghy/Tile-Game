@@ -1,42 +1,22 @@
 import type { Tile } from "../structures/Tile";
-import { TileMatrix } from "./TileMatrix";
+import { TileContext } from "./TileContext";
+import { TileMatrix } from "../structures/TileMatrix";
 
-interface MatrixOptions {
-    width: number;
-    rows: number;
-}
+export class TileManager {
+    public tileMatrix: TileMatrix;
+    public tileContext: TileContext;
 
-interface RedrawOptions {
-    color?: string | null;
-}
-
-export class TileManager extends TileMatrix {
-    public context: CanvasRenderingContext2D;
-
-    public constructor(context: CanvasRenderingContext2D, options: MatrixOptions) {
-        super(options.width, options.rows);
-        this.context = context;
+    public constructor(canvas: HTMLCanvasElement) {
+        this.tileMatrix = new TileMatrix(canvas.width, 4);
+        this.tileContext = new TileContext(canvas);
     }
 
-    public draw(tile: Tile) {
-        this.context.fillStyle = tile.color;
-        this.context.fillRect(tile.x, tile.y, tile.width, tile.height);
+    public update(tile: Tile, options?: any): void {
+        this.tileContext.redraw(tile, options);
     }
 
-    public redraw(tile: Tile, options?: RedrawOptions) {
-        this.context.clearRect(tile.x, tile.y, tile.width, tile.height);
-        this.context.fillStyle = options?.color ?? tile.color;
-        this.context.fillRect(tile.x, tile.y, tile.width, tile.height);
-    }
-
-    public drawTiles() {
-        for (const tile of this.tiles) {
-            this.draw(tile);
-        }
-    }
-
-    public redrawTiles() {
-        this.context.clearRect(0, 0, this.width, this.width);
-        this.drawTiles();
+    public updateAll(options: { clickable: number }): void {
+        this.tileMatrix.createMatrix(options.clickable);
+        this.tileContext.redrawAll(this.tileMatrix.tiles);
     }
 }

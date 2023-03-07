@@ -1,4 +1,4 @@
-import type { Tile } from "../structures/Tile";
+import type { Tile } from "./Tile";
 
 export class TileContext {
     private canvas: HTMLCanvasElement;
