@@ -30,7 +30,7 @@
     }
 </script>
 
-<svelte:component this={Scoreboard} type="timed" />
+<svelte:component this={Scoreboard} />
 <svelte:component
     this={component}
     game={gamemode}
