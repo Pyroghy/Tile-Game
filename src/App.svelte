@@ -6,10 +6,14 @@
     import Pattern from "./routes/Pattern.svelte";
     import Multiplayer from "./routes/Multiplayer.svelte";
 
+    import MainHome from "./page/Home.svelte";
+
     // get correct type dec
     let component: any;
 
     // add 404 page
+
+    page("/play", () => (component = MainHome));
 
     page("/", () => (component = Home));
     page("/timed", () => (component = Timed));

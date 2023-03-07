@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tile Game</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0 auto;
+            display: flex;
+
+            place-content: center;
+
+            width: 100vw;
+            height: 100vh;
+
+            background-color: #242424;
+        }
+
+        section.nav {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5rem;
+            height: calc( 100vh - 2rem);
+            max-width: calc(((100vw - 100vh) / 2) * 0.9);
+            background-color: aqua;
+
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            flex-direction: column;
+        }
+
+        section.main {
+            width: 100vh;
+            height: 100vh;
+            background-color: blue;
+        }
+
+        section.side {
+            position: absolute;
+            right: calc(((((100vw - 100vh) / 2) * 0.9) - ((((100vw - 100vh) / 2) * 0.9) * 0.9)) / 2);
+            top: 2.5vh;
+
+            width: calc(((100vw - 100vh) / 2) * 0.9);
+            height: 95vh;
+
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="nav" id="nav">
+        <div style="width: 5rem; height: 5rem; background-color: bisque;">ONE</div>
+        <div style="width: 5rem; height: 5rem; background-color: bisque;">TWO</div>
+        <div style="width: 5rem; height: 5rem; background-color: bisque;">THR</div>
+        <div style="width: 5rem; height: 5rem; background-color: bisque;">FOR</div>
+
+        <div style="position:absolute; bottom:1rem; width: 5rem; height: 5rem; background-color: bisque;">FIV</div>
+    </section>
+
+    <section class="main" id="main">
+        SECTION TWO
+    </section>
+
+    <section class="side" id="side">
+        SIDE BAR
+    </section>
+
+    <script>
+        const nav = document.getElementById("nav");
+
+        nav.onmouseenter = () => {
+            nav.style.width = "24rem";
+        }
+
+        nav.onmouseleave = () => {
+            nav.style.width = "5rem";
+        }
+    </script>
+
+</body>
+
+</html>
