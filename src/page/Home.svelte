@@ -1,13 +1,35 @@
 <script lang="ts">
-    import NavMenu from "./components/NavMenu.svelte";
+    import Nav from "./components/Nav.svelte";
+    import Main from "./components/Main.svelte";
+    import Game from "./components/Game.svelte";
+    import Config from "./components/Config.svelte";
+
+    let component: any = Main;
+
+    function onHome() {
+        component = Main;
+    }
+
+    function onPlay() {
+        component = Game;
+    }
+
+    function onLogin() {
+        alert("LOGIN");
+    }
 </script>
 
 <main>
-    <svelte:component this={NavMenu} />
+    <svelte:component
+        this={Nav}
+        on:home={onHome}
+        on:play={onPlay}
+        on:login={onLogin}
+    />
 
-    <section class="main">MAIN</section>
+    <svelte:component this={component} />
 
-    <section class="side">SIDE</section>
+    <svelte:component this={Config} />
 </main>
 
 <style>
@@ -18,23 +40,5 @@
     main {
         display: grid;
         grid-template-columns: var(--navWidth) 100vh var(--navWidth);
-    }
-
-    section {
-        height: 100vh;
-    }
-
-    section.main {
-        background-color: #121212;
-    }
-
-    section.side {
-        place-self: center;
-
-        width: 90%;
-        height: 95vh;
-
-        border-radius: 1rem;
-        background-color: #121212;
     }
 </style>
