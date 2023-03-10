@@ -56,7 +56,7 @@
     }
 
     nav:hover {
-        width: calc(var(--navWidth) * 0.8);
+        width: calc(25vw * 0.8);
     }
 
     button {
@@ -92,6 +92,6 @@
     span {
         display: table-cell;
         vertical-align: middle;
-        width: calc(var(--navWidth) * 0.8);
+        width: calc(25vw * 0.8);
     }
 </style>

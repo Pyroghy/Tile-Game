@@ -1,44 +1,65 @@
 <script lang="ts">
-    import Nav from "./components/Nav.test.svelte";
-    import Main from "./components/Main.svelte";
     import Game from "./components/Game.svelte";
-    import Config from "./components/Config.svelte";
 
-    let component: any = Main;
+    function enterTimedMode() {}
 
-    function onHome() {
-        component = Main;
-    }
+    function enterPatternMode() {}
 
-    function onPlay() {
-        component = Game;
-    }
-
-    function onLogin() {
-        alert("LOGIN");
-    }
+    function enterMultiplayer() {}
 </script>
 
+<Game />
+
+<!--
 <main>
-    <svelte:component
-        this={Nav}
-        on:home={onHome}
-        on:play={onPlay}
-        on:login={onLogin}
-    />
-
-    <svelte:component this={component} />
-
-    <svelte:component this={Config} />
+    <section>
+        <button on:click={enterTimedMode}>TIMED MODE</button>
+        <button on:click={enterPatternMode}>PATTERN MODE</button>
+        <button on:click={enterMultiplayer}>MULTIPLAYER</button>
+    </section>
+ 
 </main>
-
+   -->
 <style>
-    :root {
-        --navWidth: calc((100vw - 100vh) / 2);
+    main {
+        display: flex;
+        flex-direction: column;
+        place-content: center;
+        place-items: center;
+
+        width: 60vw;
+        height: 100vh;
+
+        background-color: #121212;
     }
 
-    main {
-        display: grid;
-        grid-template-columns: var(--navWidth) 100vh var(--navWidth);
+    section {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    button {
+        cursor: pointer;
+        padding: 0;
+
+        color: #999;
+        font-size: 1.5rem;
+        font-weight: 600;
+
+        width: 16rem;
+        height: 4rem;
+
+        border: none;
+        border-radius: 0.5rem;
+        background-color: black;
+    }
+
+    button:hover {
+        color: white;
+    }
+
+    button:focus {
+        background-color: blue;
     }
 </style>
