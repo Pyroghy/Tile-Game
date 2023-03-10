@@ -1,16 +1,15 @@
 <script lang="ts">
-    import GameConfig from "./game_config/GameConfig.svelte";
-    import TimedConfig from "./game_config/TimedConfig.svelte";
+    import GameConfigV2 from "./game_config/GameConfig_v2.svelte";
 
-    let component: any = GameConfig;
+    let component: any = GameConfigV2;
 
     function onTimed() {
-        component = TimedConfig;
+        component = GameConfigV2;
     }
 
     function onBack() {
-        component = GameConfig;
+        component = GameConfigV2;
     }
 </script>
 
-<svelte:component this={component} on:timed={onTimed} on:back={onBack} />
+<svelte:component this={GameConfigV2} on:timed={onTimed} on:back={onBack} />

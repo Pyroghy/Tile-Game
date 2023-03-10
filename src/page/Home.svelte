@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Nav from "./components/Nav.svelte";
+    import Nav from "./components/Nav.test.svelte";
     import Main from "./components/Main.svelte";
     import Game from "./components/Game.svelte";
     import Config from "./components/Config.svelte";
