@@ -1,4 +1,9 @@
 <script lang="ts">
+    import { createEventDispatcher } from "svelte";
+    import Button from "./Button.svelte";
+
+    const dispatch = createEventDispatcher();
+
     function getSubmitedValue(name: string) {
         const elements: any = document.getElementsByName(name);
 
@@ -10,12 +15,10 @@
     }
 
     function handleSubmit() {
-        const obj = {
-            time: getSubmitedValue("times"),
-            grid: getSubmitedValue("tiles"),
-        };
-
-        return obj;
+        dispatch("start", {
+            seconds: getSubmitedValue("seconds"),
+            tiles: getSubmitedValue("tiles"),
+        });
     }
 </script>
 
@@ -24,26 +27,11 @@
         <h3>Select Game Time</h3>
 
         <section>
-            <article>
-                <input type="radio" id="sec15" name="times" value="15" />
-                <label for="sec15">15 Seconds</label>
-            </article>
+            <Button id="sec15" name="seconds" value="15" />
 
-            <article>
-                <input
-                    type="radio"
-                    id="sec30"
-                    name="times"
-                    value="30"
-                    checked
-                />
-                <label for="sec30">30 Seconds</label>
-            </article>
+            <Button id="sec30" name="seconds" value="30" checked />
 
-            <article>
-                <input type="radio" id="sec60" name="times" value="60" />
-                <label for="sec60">60 Seconds</label>
-            </article>
+            <Button id="sec60" name="seconds" value="60" />
         </section>
     </div>
 
@@ -51,26 +39,11 @@
         <h3>Select Grid Size</h3>
 
         <section>
-            <article>
-                <input type="radio" id="cnt9" name="tiles" value="9" />
-                <label for="cnt9">9 Tiles</label>
-            </article>
+            <Button id="cnt9" name="tiles" value="9" />
 
-            <article>
-                <input
-                    type="radio"
-                    id="cnt16"
-                    name="tiles"
-                    value="16"
-                    checked
-                />
-                <label for="cnt16">16 Tiles</label>
-            </article>
+            <Button id="cnt16" name="tiles" value="16" checked />
 
-            <article>
-                <input type="radio" id="cnt25" name="tiles" value="25" />
-                <label for="cnt25">25 Tiles</label>
-            </article>
+            <Button id="cnt25" name="tiles" value="25" />
         </section>
     </div>
 
@@ -83,17 +56,11 @@
         flex-direction: column;
         place-content: center;
         place-items: center;
+        place-self: center;
 
         gap: 2rem;
 
-        background-color: blue;
-    }
-
-    section {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        width: 100%;
+        width: 50%;
     }
 
     div {
@@ -105,52 +72,19 @@
         float: left;
     }
 
-    label {
-        cursor: pointer;
+    section {
         display: flex;
-        place-content: center;
-        place-items: center;
-
+        flex-direction: row;
+        justify-content: space-between;
         width: 100%;
-        height: 100%;
-
-        color: #999;
-        font-weight: 500;
-
-        border-radius: 0.5rem;
-    }
-
-    label:hover {
-        color: white;
-    }
-
-    input[type="radio"] {
-        display: none;
-    }
-
-    input[type="radio"]:checked + label {
-        color: white;
-        background-color: blue;
-    }
-
-    article {
-        display: flex;
-        place-content: center;
-        place-items: center;
-
-        width: 30%;
-        height: 3rem;
-
-        border-radius: 0.5rem;
-        background-color: black;
     }
 
     input[type="submit"] {
         cursor: pointer;
         padding: 0;
 
-        width: 80%;
-        height: 4rem;
+        width: 100%;
+        height: 3rem;
 
         color: #fff;
         font-weight: 600;
@@ -158,7 +92,7 @@
         text-align: center;
 
         border: none;
-        border-radius: 1rem;
+        border-radius: 0.5rem;
         background-color: blue;
         box-shadow: 0px 0.125rem aqua;
     }
