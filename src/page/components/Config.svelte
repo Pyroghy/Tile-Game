@@ -47,7 +47,7 @@
         </section>
     </div>
 
-    <input type="submit" value="Start!" />
+    <input type="submit" value="START" />
 </form>
 
 <style>
